@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Platero de Oro · Web versión 3 (del olivo a tu mesa)</title>
+<meta name="description" content="AOVE de cosecha temprana de nuestras fincas familiares de Jaén. Premium, Blanca y Centenario, estuches de regalo y lotes.">
+<style>
+@font-face{font-family:"Great Vibes";src:url(fonts/great-vibes.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Bodoni Moda";font-weight:500;src:url(fonts/bodoni-500.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Poppins";font-weight:400;src:url(fonts/poppins-400.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Poppins";font-weight:600;src:url(fonts/poppins-600.woff2) format("woff2");font-display:swap}
+:root{--negro:#0B0B08;--tinta:#17150B;--crema:#F3EAD3;--oro:#D4A72C;--oro-cl:#F0CF6A;--oro-os:#8A6A17;--gris:#A79E8A;--linea:rgba(243,234,211,.14);
+--serif:"Bodoni Moda",Didot,Georgia,serif;--script:"Great Vibes",cursive;--sans:Poppins,system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--negro);color:var(--crema);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--oro-cl)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0;line-height:1}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.kicker{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro);font-weight:600;margin:0 0 14px}
+.h2{font-size:clamp(40px,6vw,76px);text-transform:uppercase;letter-spacing:1px}
+.h2 .scr{display:block;font-family:var(--script);text-transform:none;letter-spacing:0;color:var(--oro);font-size:.62em;line-height:1.05}
+button{color:inherit;-webkit-tap-highlight-color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 28px;border-radius:999px;font:600 15px var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-oro{background:var(--oro);color:var(--tinta)}
+.btn-claro{border-color:rgba(243,234,211,.45);color:var(--crema);background:transparent}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--oro-cl);outline-offset:3px}
+
+/* ── 1 · Cortina de entrada ── */
+.cortina{position:fixed;inset:0;z-index:100;background:var(--negro);display:flex;align-items:center;justify-content:center;transition:transform 1.05s cubic-bezier(.87,0,.13,1)}
+.cortina-in{display:flex;flex-direction:column;align-items:center;gap:18px;transition:transform 1.05s cubic-bezier(.87,0,.13,1)}
+.cortina-logo{width:min(380px,70vw);opacity:0;transform:translateY(18px);transition:opacity .7s .55s,transform .7s .55s cubic-bezier(.2,.8,.2,1)}
+.cortina-sierra{width:min(420px,76vw);height:90px;overflow:visible}
+.cortina-sierra path{fill:none;stroke:var(--oro);stroke-width:3;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .95s .1s cubic-bezier(.65,0,.35,1)}
+.cortina-borde{position:absolute;left:0;right:0;top:100%;width:100%;height:70px;transform-origin:top;transition:transform 1.05s cubic-bezier(.87,0,.13,1)}
+.cortina-borde path{fill:var(--negro)}
+.cortina.dibuja .cortina-sierra path{stroke-dashoffset:0}
+.cortina.dibuja .cortina-logo{opacity:1;transform:none}
+.cortina.sube{transform:translateY(-100%)}
+.cortina.sube .cortina-in{transform:translateY(-16%)}
+.cortina.sube .cortina-borde{transform:scaleY(0)}
+.cortina-saltar{position:absolute;bottom:28px;right:28px;background:none;border:1px solid var(--linea);color:var(--gris);border-radius:999px;padding:8px 16px;font:500 13px var(--sans);cursor:pointer}
+
+/* ── cabecera ── */
+.cab{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .35s,color .35s,box-shadow .35s}
+.cab-bar{display:flex;justify-content:center;gap:10px 14px;flex-wrap:wrap;padding:7px 16px;background:#000;font-size:12.5px;letter-spacing:.04em}
+.cab-bar b{color:var(--oro-cl);letter-spacing:.18em;text-transform:uppercase}
+.cab-in{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 32px}
+.cab-logo img{height:34px;width:auto}
+.cab nav{display:flex;gap:26px;font-size:14.5px}
+.cab nav a{color:inherit;text-decoration:none}
+.cab nav a.nav-bf{color:var(--oro-cl);font-weight:600}
+.cab-cesta{position:relative;width:44px;height:44px;border:0;background:none;color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cab-cesta .n{position:absolute;top:2px;right:0;min-width:18px;height:18px;border-radius:9px;background:var(--oro);color:var(--tinta);font:700 11px/18px var(--sans);text-align:center;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.cab-cesta .n.si{transform:scale(1)}
+.cab-cesta.late{animation:late .45s}
+@keyframes late{40%{transform:scale(1.18)}}
+html.cab-solida .cab{background:rgba(11,11,8,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--linea)}
+
+/* ── 2 · Portada fijada: noche → alba → día ── */
+.alba-tramo{height:330vh;position:relative}
+.alba-escena{position:sticky;top:0;height:100vh;overflow:hidden}
+.alba-cielo{position:absolute;inset:0}
+.cielo-noche{background:radial-gradient(ellipse at 50% 120%,#1b1609 0%,#070705 55%,#000 100%)}
+.cielo-alba{background:linear-gradient(180deg,#1d1208 0%,#5a2f12 38%,#b8661f 66%,#e8a440 100%);opacity:0}
+.cielo-dia{background:linear-gradient(180deg,#2a1d07 0%,#7a5414 35%,#d4a72c 70%,#f6dc8f 100%);opacity:0}
+.estrellas{position:absolute;inset:0 0 40% 0}
+.estrellas i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff}
+.alba-montes{position:absolute;inset:0;width:100%;height:100%}
+.alba-montes .c1{fill:#3b2a10}
+.alba-montes .c2{fill:#21180a}
+.alba-montes .c3{fill:var(--negro)}
+.alba-linea{fill:none;stroke:var(--oro);stroke-width:2.5;stroke-dasharray:1;stroke-dashoffset:1}
+.alba-halo{position:absolute;left:0;top:0;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(255,224,150,.75) 0%,rgba(240,180,70,.32) 38%,rgba(240,180,70,0) 70%);opacity:0;pointer-events:none}
+.alba-sol{position:absolute;left:0;top:0;height:min(50vh,460px);aspect-ratio:620/545;will-change:transform;transform-origin:50% 100%}
+.alba-sol svg{width:100%;height:100%;display:block;overflow:visible}
+.dib{fill:none;stroke-dasharray:1;stroke-dashoffset:1}
+.alba-logo{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);text-align:center;width:min(520px,80vw)}
+.alba-lema{margin:18px 0 0;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--oro-cl)}
+.alba-lema .car{opacity:0;transition:opacity .25s calc(var(--i) * 45ms + 1.3s)}
+html.listo .alba-lema .car{opacity:1}
+.alba-final{position:absolute;left:max(32px,calc((100% - 1240px)/2 + 32px));bottom:9vh;max-width:620px;visibility:hidden}
+.alba-final h1{font-size:clamp(46px,6.4vw,92px);text-transform:uppercase;letter-spacing:1px;color:#fff}
+.alba-final h1 .scr{display:block;font-family:var(--script);text-transform:none;letter-spacing:0;color:var(--oro-cl);font-size:.6em;line-height:1.05}
+.alba-final p{margin:16px 0 26px;max-width:500px;color:rgba(243,234,211,.86);font-size:17px}
+.alba-final .acc{display:flex;gap:12px;flex-wrap:wrap}
+.alba-pista{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gris);display:flex;flex-direction:column;align-items:center;gap:8px}
+.alba-pista i{width:1px;height:34px;background:linear-gradient(var(--oro),transparent);animation:pista 1.8s infinite}
+@keyframes pista{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+/* la gota cae sobre la botella cuando ya es de día */
+.gota-cae{position:absolute;width:22px;height:30px;color:var(--oro-cl);opacity:0;pointer-events:none;filter:drop-shadow(0 0 10px rgba(240,207,106,.8))}
+.gota-cae svg{width:100%;height:100%;fill:currentColor}
+.alba-anillo{position:absolute;width:90px;height:22px;border:2px solid var(--oro-cl);border-radius:50%;opacity:0;pointer-events:none}
+
+/* ── 3 · Escaparate fijado ── */
+.esc-tramo{position:relative}
+.esc-escena{position:sticky;top:0;height:100vh;overflow:hidden;transition:background-color .6s,color .6s}
+.esc-palabra{position:absolute;top:50%;left:0;white-space:nowrap;font-family:var(--serif);font-size:clamp(120px,22vw,340px);line-height:1;text-transform:uppercase;opacity:.09;transform:translateY(-50%);will-change:transform}
+.esc-botella{position:absolute;left:50%;top:54%;height:min(66vh,600px);width:auto;transform-origin:50% 60%;will-change:transform,opacity;filter:drop-shadow(0 30px 40px rgba(0,0,0,.4))}
+.esc-ficha{position:absolute;left:max(32px,calc((100% - 1240px)/2 + 32px));top:50%;transform:translateY(-50%);width:min(320px,30vw)}
+.esc-ficha h3{font-size:clamp(34px,3.6vw,52px);margin:0 0 10px}
+.esc-ficha p{margin:0 0 16px;opacity:.82;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:12.5px;padding:5px 12px;border-radius:999px;border:1px solid currentColor;opacity:.85}
+.esc-compra{position:absolute;right:max(32px,calc((100% - 1240px)/2 + 32px));top:50%;transform:translateY(-50%);text-align:right;width:min(280px,26vw)}
+.esc-precio{font-family:var(--serif);font-size:58px;line-height:1}
+.esc-litro{margin:6px 0 20px;opacity:.75;font-size:14px}
+.esc-num{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.24em;display:flex;gap:10px}
+.esc-num i{width:28px;height:2px;background:currentColor;opacity:.25;display:inline-block;align-self:center;transition:opacity .3s}
+.esc-num i.on{opacity:1}
+.esc-btn{background:var(--esc-texto,#F3EAD3);border:0;-webkit-appearance:none;appearance:none}
+.esc-btn span{color:var(--esc-fondo,#17150B)}
+
+/* ── 4 · Pestañas ── */
+.sec{padding:84px 0}
+.elige{background:#12110b}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0 22px}
+.tab{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid rgba(243,234,211,.35);background:none;color:var(--crema);font:600 14.5px var(--sans);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--oro);color:var(--tinta);border-color:var(--oro)}
+.filas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.fila{display:flex;gap:16px;align-items:center;padding:14px;border-radius:14px;background:rgba(243,234,211,.04);border:1px solid var(--linea)}
+.fila img{width:74px;height:84px;object-fit:contain;flex:0 0 74px}
+.fila b{display:block;font-size:15.5px}
+.fila .pr{font-size:14px;color:var(--gris);margin:2px 0 10px}
+.fila .pr strong{color:var(--crema)}
+.barra{height:4px;border-radius:4px;background:rgba(243,234,211,.12);overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--oro-os),var(--oro-cl));border-radius:4px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.filas.visible .barra i{width:var(--w)}
+
+/* ── 5 · Tarjetas con llenado al pasar ── */
+.packs{background:var(--negro)}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-top:34px}
+.tarjeta{position:relative;border-radius:18px;background:#14130d;border:1px solid var(--linea);overflow:hidden;display:flex;flex-direction:column}
+.t-panel{position:relative;height:230px;display:flex;align-items:flex-end;justify-content:center;padding:18px 18px 0;overflow:hidden;isolation:isolate}
+.t-panel img{position:relative;z-index:2;max-height:200px;object-fit:contain;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.t-aceite{position:absolute;left:-10%;right:-10%;bottom:0;height:0;z-index:1;background:linear-gradient(180deg,rgba(212,167,44,.85),rgba(138,106,23,.95));transition:height .7s cubic-bezier(.2,.8,.2,1)}
+.t-aceite::before{content:"";position:absolute;left:0;right:0;top:-15px;height:16px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='16' viewBox='0 0 120 16'%3E%3Cpath d='M0 8 C20 2 40 2 60 8 S100 14 120 8 V16 H0Z' fill='%23D4A72C' fill-opacity='.85'/%3E%3C/svg%3E") repeat-x;background-size:120px 16px;animation:ola 3.2s linear infinite}
+@keyframes ola{to{background-position:120px 0}}
+.tarjeta:hover .t-aceite,.tarjeta:focus-within .t-aceite{height:58%}
+
+.t-dto{position:absolute;top:14px;left:14px;z-index:3;background:var(--oro);color:var(--tinta);font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px}
+.t-info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:4px;flex:1}
+.t-info h3{font-size:24px}
+.t-info .sub{font-size:13px;color:var(--gris)}
+.t-info .pr{margin:8px 0 12px;font-weight:600;font-size:18px}
+.t-info .pr s{font-weight:400;font-size:13px;color:var(--gris);margin-left:6px}
+.t-add{margin-top:auto;min-height:44px;border-radius:999px;border:0;background:var(--crema);color:var(--tinta);font:600 14px var(--sans);cursor:pointer}
+.nota{margin-top:18px;font-size:13px;color:var(--gris)}
+.gota-vuelo{position:fixed;z-index:120;width:18px;height:24px;color:var(--oro-cl);pointer-events:none;margin:-12px 0 0 -9px}
+.gota-vuelo svg{width:100%;height:100%;fill:currentColor}
+
+/* ── Black Friday ── */
+.bf{background:radial-gradient(ellipse 70% 90% at 50% 0%,#2a220c,#0b0b08 65%,#000);border-block:1px solid rgba(212,167,44,.3);padding:48px 0 44px;text-align:center}
+.cuenta{display:flex;gap:12px;justify-content:center;margin:26px auto 18px;max-width:560px}
+.cuenta div{flex:1;border:1px solid rgba(212,167,44,.4);border-radius:14px;padding:14px 6px;background:#141410}
+.cuenta b{display:block;font-family:var(--serif);font-weight:500;font-size:52px;line-height:1;font-variant-numeric:tabular-nums}
+.bf-txt{max-width:600px;margin:14px auto 0;color:rgba(243,234,211,.78);font-size:16px;line-height:1.6}
+.bf-lab{margin:26px 0 0;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gris)}
+.bf-dias{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:6px auto 28px;text-align:left}
+.bf-dia{display:flex;align-items:center;gap:22px;padding:20px 26px;border-radius:18px;border:1px solid var(--linea);background:#0f0e0a}
+.bf-dia.on{border-color:var(--oro);background:#17140b}
+.bf-dia>b{font-family:var(--serif);font-weight:500;font-size:64px;line-height:1;color:var(--crema)}
+.bf-dia.on>b{color:var(--oro)}
+.bf-dia small{display:block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gris)}
+.bf-dia strong{display:block;font-size:22px;margin:4px 0 2px}
+.bf-dia span{font-size:14px;color:var(--gris)}
+.cuenta span{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+
+/* ── 6 · Recorrido ── */
+.rec{position:relative;background:#11100a;overflow:hidden;padding-bottom:84px}
+.rec-perfil{display:block;width:100%;height:80px}
+.rec-perfil .rel{fill:#11100a}
+.perfil-linea{fill:none;stroke:var(--oro);stroke-width:2;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.8s cubic-bezier(.65,0,.35,1)}
+.trazado .perfil-linea{stroke-dashoffset:0}
+.rec-cab{text-align:center}
+.rec-mapa{position:relative;height:210px;margin:20px 0 10px}
+.rec-mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.rec-mapa .rel{fill:url(#mapa-g)}
+.lugar{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-100%);text-align:center;padding-bottom:14px;opacity:0;transition:opacity .6s calc(1.4s + var(--i) * .25s),transform .6s calc(1.4s + var(--i) * .25s);white-space:nowrap}
+.lugar::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--oro);box-shadow:0 0 0 5px rgba(212,167,44,.25)}
+.lugar b{display:block;font-family:var(--serif);font-weight:500;font-size:20px}
+.lugar span{font-size:12px;color:var(--gris)}
+.trazado .lugar{opacity:1;transform:translate(-50%,-100%) translateY(-4px)}
+.rec-camino{position:relative;max-width:1100px;margin:30px auto 0;padding:0 32px;--rec-x:44px}
+.rec-ruta{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.rec-fondo{fill:none;stroke:rgba(212,167,44,.3);stroke-width:2;stroke-dasharray:2 8;stroke-linecap:round}
+.rec-lleno{fill:none;stroke:var(--oro);stroke-width:3;stroke-linecap:round}
+.viajero{position:absolute;left:0;top:0;width:34px;height:46px;margin:-23px 0 0 -17px;color:var(--oro-cl);z-index:3;pointer-events:none}
+.viajero svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .3s,transform .3s}
+.viajero .v-gota{opacity:0;transform:scale(.6)}
+.viajero.es-gota .v-aceituna{opacity:0;transform:scale(.6)}
+.viajero.es-gota .v-gota{opacity:1;transform:none}
+.paradas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:120px;position:relative;z-index:2}
+.parada{display:grid;grid-template-columns:1fr 1fr;column-gap:160px;align-items:center}
+.parada:nth-child(even) .p-foto{order:2}
+.p-foto{justify-self:center;width:320px;height:220px;border-radius:22px;background:radial-gradient(circle at 50% 40%,#2a2410,#15130b);border:1px solid rgba(212,167,44,.4);display:flex;align-items:center;justify-content:center;overflow:hidden;transform:scale(.82);opacity:.45;transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .9s}
+.p-foto img{max-height:78%;max-width:78%;object-fit:contain}
+.p-video video{width:100%;height:100%;object-fit:cover;display:block}
+.p-foto svg{width:42%;height:42%;color:var(--oro)}
+.p-texto{opacity:.35;transform:translateY(24px);transition:opacity .8s .1s,transform .8s .1s cubic-bezier(.2,.8,.2,1)}
+.p-num{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--oro);font-weight:600;margin:0 0 8px}
+.p-texto h3{font-size:clamp(30px,3vw,44px);margin:0 0 10px}
+.p-texto p{margin:0;color:rgba(243,234,211,.78);max-width:420px}
+.parada.on .p-foto{transform:none;opacity:1}
+.parada.on .p-texto{opacity:1;transform:none}
+
+/* ── preguntas y pie ── */
+.faq{background:var(--negro)}
+.faq-in{display:grid;grid-template-columns:1fr 2fr;gap:50px}
+details{border-bottom:1px solid var(--linea);padding:16px 0}
+summary{cursor:pointer;font-weight:600;font-size:17px}
+summary::marker{color:var(--oro)}
+details p{margin:10px 0 0;color:rgba(243,234,211,.75)}
+.pie{background:#000;padding-bottom:30px}
+.pie svg{display:block;width:100%;height:80px;background:var(--negro)}
+.pie-in{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;padding-top:20px}
+.pie-in img{width:220px;height:auto}
+.pie nav{display:flex;flex-direction:column;gap:6px;font-size:15px}
+.pie nav a{color:var(--crema);text-decoration:none}
+.pie nav b{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro);margin-bottom:4px}
+.pie small{display:block;margin-top:30px;color:var(--gris)}
+
+/* ── cesta ── */
+.cajon{position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(400px,92vw);background:#100f0a;border-left:1px solid var(--linea);transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;padding:24px}
+.cajon.abierto{transform:none}
+.velo{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .3s}
+.velo.on{opacity:1;pointer-events:auto}
+.cajon h2{font-size:30px;margin-bottom:16px}
+.nivel{position:relative;height:56px;border-radius:12px;border:1px solid rgba(212,167,44,.4);overflow:hidden;margin-bottom:8px}
+.nivel i{position:absolute;left:0;bottom:0;top:0;width:0;background:linear-gradient(90deg,var(--oro-os),var(--oro));transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.nivel span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-size:13.5px;font-weight:600}
+.lineas{flex:1;overflow:auto;margin:14px 0}
+.linea{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--linea);font-size:14px}
+.linea img{width:44px;height:52px;object-fit:contain}
+.linea span{flex:1}
+.cerrar{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid var(--linea);background:none;color:var(--crema);font-size:20px;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-weight:600;font-size:17px;margin-bottom:14px}
+
+/* ── aparecer ── */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.visible{opacity:1;transform:none}
+
+/* ── móvil ── */
+
+/* Foco dorado: efecto al pasar por encima de un producto */
+.foco{position:relative;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.foco::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--ang,0deg),transparent 0 62%,#f0cf6a 72%,#D4A72C 80%,transparent 90%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s;pointer-events:none;z-index:4}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes giro{to{--ang:360deg}}
+.foco .f-luz{position:absolute;left:50%;bottom:8%;width:85%;aspect-ratio:1;transform:translateX(-50%) scale(.5);border-radius:50%;background:radial-gradient(circle,rgba(240,207,106,.55),rgba(212,167,44,.18) 45%,transparent 70%);opacity:0;transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:1}
+.foco .f-mas{position:absolute;left:50%;bottom:14px;z-index:5;transform:translate(-50%,14px);opacity:0;transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1);background:#17150B;color:#F3EAD3;font:600 13px var(--sans);letter-spacing:.04em;padding:9px 16px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.foco .f-mas i{display:inline-block;transition:transform .35s;font-style:normal;margin-left:6px}
+@media (hover:hover){
+  .foco:hover{transform:translateY(-8px);box-shadow:0 26px 50px rgba(0,0,0,.28)}
+  .foco:hover::before{opacity:1;animation:giro 2.4s linear infinite}
+  .foco:hover .f-luz{opacity:1;transform:translateX(-50%) scale(1)}
+  .foco:hover .f-mas{opacity:1;transform:translate(-50%,0)}
+  .foco:hover .f-mas i{transform:translateX(4px)}
+}
+.f-img{position:relative;z-index:2;transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s}
+html.quieto .foco::before{animation:none}
+
+/* Tienda clara */
+.tienda{background:#F3EAD3;color:#17150B;padding:72px 0}
+.tienda .kicker{color:#8A6A17}
+.tienda .h2{color:#17150B}
+.t-grupo{margin-top:40px}
+.t-grupo-cab{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid #DCCDA8;padding-bottom:12px;margin-bottom:18px}
+.t-grupo-cab h3{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3vw,40px);text-transform:uppercase;letter-spacing:.02em;margin:0}
+.t-grupo-cab span{font-size:14px;color:#5A5242}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.prod{background:#fff;border:1px solid #E4D8BC;border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:10px;color:#17150B}
+.prod-img{position:relative;height:240px;border-radius:14px;background:radial-gradient(ellipse at 50% 85%,#EFE4C8,#F8F2E4 55%,#FBF7EE);display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
+.prod-img img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 14px 14px rgba(40,30,10,.2))}
+.prod h4{margin:0 6px;font-family:var(--serif);font-weight:500;font-size:20px;line-height:1.2}
+.prod .d{margin:0 6px;font-size:13.5px;color:#5A5242;line-height:1.45}
+.prod .pr{margin:auto 6px 0;font-weight:700;font-size:20px}
+.prod .pr small{font-weight:400;font-size:12.5px;color:#7a705d;margin-left:6px}
+.prod button{min-height:44px;border:0;border-radius:999px;background:#17150B;color:#F3EAD3;font:600 14px var(--sans);cursor:pointer;margin:0 4px 4px}
+.prod button:hover{background:#2b2715}
+/* En tu mesa */
+.mesa{background:#fff;color:#17150B;padding:72px 0}
+.mesa .kicker{color:#8A6A17}.mesa .h2{color:#17150B}
+.mesa-fotos{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:16px;margin-top:30px;height:min(78vh,640px)}
+.mesa-fotos figure{margin:0;border-radius:22px;overflow:hidden;position:relative}
+.mesa-fotos figure:first-child{grid-row:1/3}
+.mesa-fotos img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.mesa-fotos figure:hover img{transform:scale(1.05)}
+.mesa-fotos figcaption{position:absolute;left:16px;bottom:14px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600}
+/* Nuestra tierra */
+.tierra{background:#11100a;padding:84px 0}
+.tierra-in{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.tierra-foto{border-radius:24px;overflow:hidden;aspect-ratio:4/5}
+.tierra-foto img{width:100%;height:100%;object-fit:cover;object-position:62% 45%}
+.tierra p.t{color:rgba(243,234,211,.8);font-size:17px;line-height:1.65;margin:18px 0 26px}
+.fincas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:26px}
+.fincas div{border:1px solid var(--linea);border-radius:16px;padding:14px 16px}
+.fincas b{display:block;font-family:var(--serif);font-weight:500;font-size:20px}
+.fincas span{font-size:13px;color:var(--gris)}
+/* Profesionales */
+.pro{background:#CDA846;color:#17150B;padding:84px 0}
+.pro h2{font-family:var(--serif);font-weight:500;font-size:clamp(38px,5vw,64px);line-height:1.02;text-transform:uppercase;margin:0;max-width:820px}
+.pro h2 .scr{display:block;text-transform:none;color:#17150B;font-size:1.05em;margin-top:6px}
+.pro p{max-width:560px;font-size:17px;line-height:1.6;margin:18px 0 28px}
+.btn-negro{background:#17150B;color:#F3EAD3}
+/* Pop-up lista prioritaria */
+.lista-velo{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;pointer-events:none;transition:opacity .35s}
+.lista-velo.on{opacity:1;pointer-events:auto}
+.lista-caja{position:relative;width:min(460px,100%);max-height:92vh;overflow:auto;background:radial-gradient(ellipse at 50% 0%,#2a220c,#0e0d08 70%);border:1px solid rgba(212,167,44,.5);border-radius:24px;padding:30px 26px 22px;color:var(--crema);transform:translateY(20px) scale(.97);transition:transform .45s cubic-bezier(.2,.9,.25,1.2)}
+.lista-velo.on .lista-caja{transform:none}
+.lista-caja .x{position:absolute;top:10px;right:12px;width:40px;height:40px;border:0;background:none;color:var(--crema);font-size:26px;cursor:pointer}
+.lista-caja .kicker{margin:0 0 6px}
+.lista-caja h2{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.05;margin:0 0 8px;text-transform:uppercase}
+.lista-caja h2 .scr{display:block;text-transform:none;color:var(--oro);font-size:.9em}
+.lista-caja p.int{margin:0 0 18px;color:rgba(243,234,211,.8);font-size:15px;line-height:1.5}
+.lista-caja label.c{display:block;font-size:13px;margin-bottom:12px;color:rgba(243,234,211,.85)}
+.lista-caja input[type=text],.lista-caja input[type=email],.lista-caja input[type=tel]{display:block;width:100%;margin-top:6px;padding:13px 14px;border-radius:12px;border:1px solid rgba(243,234,211,.25);background:rgba(255,255,255,.06);color:var(--crema);font:15px var(--sans)}
+.lista-caja input:focus{outline:2px solid var(--oro);outline-offset:1px}
+.via{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 12px}
+.via label{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:12px;border:1px solid rgba(243,234,211,.25);cursor:pointer;font-size:14px}
+.via input{accent-color:#D4A72C}
+.via label:has(input:checked){border-color:var(--oro);background:rgba(212,167,44,.14)}
+.acepto{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:rgba(243,234,211,.78);margin:4px 0 16px}
+.acepto input{margin-top:2px;accent-color:#D4A72C;width:18px;height:18px;flex:0 0 18px}
+.lista-caja .btn{width:100%;justify-content:center}
+.no-quiero{display:block;margin:12px auto 0;background:none;border:0;color:rgba(243,234,211,.6);text-decoration:underline;font:14px var(--sans);cursor:pointer}
+.lista-err{color:#ffb4a8;font-size:13px;min-height:18px;margin:-6px 0 8px}
+.lista-ok{text-align:center;padding:10px 0}
+.lista-ok b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;margin:6px 0}
+.lista-fija{position:fixed;left:50%;bottom:18px;z-index:60;transform:translate(-50%,140%);transition:transform .45s cubic-bezier(.2,.9,.25,1.2);background:#D4A72C;color:#17150B;border:0;border-radius:999px;padding:13px 20px;font:600 14px var(--sans);box-shadow:0 12px 30px rgba(0,0,0,.4);cursor:pointer;max-width:calc(100% - 28px);white-space:nowrap}
+.lista-fija.on{transform:translate(-50%,0)}
+@media (max-width:860px){
+  .tienda,.mesa{padding:52px 0}.tierra,.pro{padding:56px 0}
+  .prods{grid-template-columns:1fr 1fr;gap:10px}
+  .prod{padding:8px;border-radius:16px;gap:8px}
+  .prod-img{height:160px;padding:10px}
+  .prod h4{font-size:16px}.prod .d{display:none}.prod .pr{font-size:16px}
+  .prod button{min-height:40px;font-size:13px}
+  .t-grupo{margin-top:30px}
+  .mesa-fotos{grid-template-columns:1fr;grid-template-rows:auto;height:auto}
+  .mesa-fotos figure:first-child{grid-row:auto}
+  .mesa-fotos figure{aspect-ratio:4/3}
+  .tierra-in{grid-template-columns:1fr;gap:28px}
+  .tierra-foto{aspect-ratio:4/5}
+  .lista-fija{font-size:13px;padding:12px 16px}
+}
+@media (max-width:860px){.bf-dias{grid-template-columns:1fr}.cuenta b{font-size:40px}.bf-dia>b{font-size:52px}
+.cab nav{display:none}
+.cab-in{padding:10px 18px}
+.wrap{padding:0 20px}
+.esc-ficha{left:20px;right:20px;top:auto;bottom:118px;transform:none;width:auto}
+.esc-ficha h3{font-size:32px}.esc-ficha p{display:none}
+.esc-compra{right:20px;left:20px;top:auto;bottom:56px;transform:none;width:auto;display:flex;align-items:center;justify-content:space-between;text-align:left}
+.esc-precio{font-size:36px}.esc-litro{margin:0}
+.esc-botella{top:45%;height:50vh}
+.sec{padding:56px 0}.bf{padding:36px 0 32px}.bf .btn{margin-top:4px}.rejilla{margin-top:24px}.rec{padding-bottom:56px}.rec-perfil{height:56px}.paradas{gap:56px!important}.rec-mapa{height:160px;margin:12px 0 4px}
+.alba-sol{height:40vh}
+.faq-in{grid-template-columns:1fr}
+.parada{grid-template-columns:1fr;row-gap:22px;padding-left:64px}
+.parada:nth-child(even) .p-foto{order:0}
+.p-foto{justify-self:stretch;width:auto;height:190px}
+.paradas{gap:80px}
+.rec-camino{padding:0 16px}
+.cuenta b{font-size:34px}.cuenta span{font-size:9px;letter-spacing:.06em}
+.lugar b{font-size:15px}
+}
+
+
+/* ── El viaje de la aceituna (seguido, fijado) ── */
+.vjt{position:relative;height:900vh}
+.vjt-escena{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#15130b 0%,var(--negro) 70%)}
+.vj-mundo{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dib{fill:none;stroke-dasharray:1;stroke-dashoffset:1}
+.vjt-panel{position:absolute;left:max(32px,calc((100% - 1240px)/2 + 32px));top:22vh;width:min(390px,38vw);pointer-events:none}
+.vjt-panel::before{content:"";position:absolute;inset:-90px -170px -110px -200px;background:radial-gradient(ellipse at 40% 45%,rgba(11,11,8,.86),rgba(11,11,8,0) 68%)}
+.vjt-paso{position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateY(22px);transition:opacity .5s,transform .5s}
+.vjt-paso.on{opacity:1;transform:none}
+.vjt-paso h2{font-size:clamp(34px,3.8vw,56px);text-transform:uppercase;letter-spacing:1px}
+.vjt-paso h2 .scr{display:block;font-family:var(--script);text-transform:none;letter-spacing:0;color:var(--oro);font-size:.74em;line-height:1.12}
+.vjt-paso>p:not(.kicker){color:rgba(243,234,211,.84);font-size:16px;margin:12px 0 0}
+.vjt-rail{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);width:min(560px,80vw);display:flex;justify-content:space-between;align-items:center}
+.vjt-rail::before,.vjt-lleno{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:rgba(243,234,211,.15)}
+.vjt-lleno{right:auto;width:0;background:var(--oro)}
+.vjt-rail i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--negro);border:2px solid rgba(243,234,211,.3);transition:.3s}
+.vjt-rail i.on{background:var(--oro);border-color:var(--oro);box-shadow:0 0 10px rgba(212,167,44,.7)}
+.saltar-intro{position:fixed;left:0;top:0;z-index:45;display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;border:1px solid rgba(240,207,106,.55);background:rgba(11,11,8,.72);backdrop-filter:blur(8px);color:var(--crema);font:600 13.5px var(--sans);cursor:pointer;transition:opacity .35s,background .2s}
+.saltar-intro:hover{background:var(--oro);color:var(--tinta)}
+.saltar-intro.fuera{opacity:0;pointer-events:none}
+.saltar-intro.vista{background:var(--oro);color:var(--tinta);border-color:var(--oro)}
+.arbol-viaja{position:fixed;z-index:30;pointer-events:none;visibility:hidden;transform-origin:50% 100%}
+.arbol-viaja svg{width:100%;height:100%;display:block;overflow:visible}
+.botella-cae{position:fixed;left:0;top:0;z-index:30;height:100px;width:auto;pointer-events:none;visibility:hidden;transform-origin:50% 50%;will-change:transform;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+@media (max-width:860px){
+ .vjt{height:800vh}
+ .vjt-panel{left:20px;right:20px;width:auto;top:74px;text-align:center}
+ .vjt-panel::before{display:none}
+ .vjt-paso h2{font-size:26px}.vjt-paso h2 .scr{font-size:.8em}.vjt-paso .kicker{font-size:10px;margin-bottom:4px}.vjt-paso>p:not(.kicker){font-size:13.5px;margin-top:4px;line-height:1.45}
+ .saltar-intro{padding:9px 14px;font-size:12.5px}
+}
+html.quieto .vjt{height:auto}html.quieto .vjt-escena{position:relative}
+
+/* ── brillo dorado al hacer scroll y segunda foto ── */
+.foco .f-luz{opacity:calc(var(--brillo,0) * .85);transform:translateX(-50%) scale(calc(.55 + var(--brillo,0) * .45))}
+.foco{box-shadow:0 0 calc(var(--brillo,0) * 46px) rgba(212,167,44,calc(var(--brillo,0) * .28))}
+.mesa-fotos figure,.tierra-foto{box-shadow:0 0 calc(var(--brillo,0) * 60px) rgba(212,167,44,calc(var(--brillo,0) * .38));transition:box-shadow .2s}
+.f-img2{position:absolute!important;left:18px;top:18px;width:calc(100% - 36px)!important;height:calc(100% - 36px)!important;max-width:none!important;max-height:none!important;object-fit:contain;object-position:50% 50%;opacity:0;z-index:3;transition:opacity .5s ease;filter:drop-shadow(0 14px 14px rgba(40,30,10,.22))}
+.f-dos{position:absolute;top:12px;right:12px;z-index:5;display:flex;gap:5px}
+.f-dos i{width:7px;height:7px;border-radius:50%;background:rgba(23,21,11,.25);transition:background .3s}
+.f-dos i:first-child{background:var(--oro)}
+.foco.dos.ver2 .f-img2{opacity:1;transform:none}
+.foco.dos.ver2 .f-img{opacity:0}
+.foco.dos.ver2 .f-dos i:first-child{background:rgba(255,255,255,.5)}
+.foco.dos.ver2 .f-dos i:last-child{background:var(--oro)}
+.foco .f-img{transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .55s,opacity .45s}
+@media (hover:hover){.foco.dos:hover .f-img2{opacity:1;transform:none}.foco.dos:hover .f-img{opacity:0}.foco.dos:hover .f-dos i:first-child{background:rgba(255,255,255,.5)}.foco.dos:hover .f-dos i:last-child{background:var(--oro)}}
+.t-panel{position:relative;overflow:hidden}
+
+
+/* ── cabecera compacta: Black Friday junto al logo y menú del logo ── */
+.cab-in{gap:18px}
+.cab-marca{position:relative;flex:none}
+.cab-logo{display:flex;align-items:center;gap:6px;background:none;border:0;padding:4px 2px;color:inherit;cursor:pointer}
+.cab-logo .flecha{transition:transform .3s;opacity:.85}
+.cab-logo[aria-expanded="true"] .flecha{transform:rotate(180deg)}
+.cab-menu{position:absolute;left:0;top:calc(100% + 10px);min-width:250px;max-height:calc(100vh - 90px);overflow:auto;background:rgba(17,16,10,.97);backdrop-filter:blur(10px);border:1px solid rgba(212,167,44,.35);border-radius:18px;padding:10px;box-shadow:0 24px 50px rgba(0,0,0,.5);display:flex;flex-direction:column;color:var(--crema);animation:menuIn .25s ease}
+.cab-menu[hidden]{display:none}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.cab-menu a{color:var(--crema);text-decoration:none;padding:10px 12px;border-radius:10px;font-size:15px}
+.cab-menu a:hover,.cab-menu a:focus-visible{background:rgba(212,167,44,.14);color:var(--oro-cl)}
+.cab-menu a.m-sub{padding-left:26px;font-size:14px;opacity:.85}
+.cab-menu a.m-bf{color:var(--oro-cl);font-weight:600}
+.cab-menu p{margin:8px 12px 2px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.cab-bf{display:flex;align-items:center;gap:4px 10px;flex-wrap:wrap;margin-right:auto;padding:6px 14px;border:1px solid rgba(212,167,44,.45);border-radius:999px;background:rgba(0,0,0,.45);color:var(--crema);text-decoration:none;font-size:12.5px;line-height:1.25}
+.cab-bf b{color:var(--oro-cl);letter-spacing:.16em;text-transform:uppercase;font-size:11.5px}
+.cab-bf strong{font-variant-numeric:tabular-nums}
+@media (max-width:860px){
+ .cab-in{gap:10px}
+ .cab-logo img{height:26px}
+ .cab-bf{flex-direction:column;align-items:flex-start;gap:1px;padding:5px 11px;margin-left:2px;font-size:11px}
+ .cab-bf b{font-size:9.5px;letter-spacing:.14em}
+ .cab-bf-f,.cab-bf [data-cd="lab"],.cab-bf .seg{display:none}
+ .cab-menu{position:fixed;left:12px;right:12px;top:62px;min-width:0}
+}
+.t-grupo,section[id]{scroll-margin-top:76px}
+/* precio con descuento en la tienda */
+.prod .pr s{font-size:13px;opacity:.55;margin-left:6px;font-weight:400}
+.prod .t-dto{position:absolute;left:12px;top:12px;z-index:5}
+
+/* ── sin movimiento ── */
+html.quieto .alba-tramo{height:auto}
+html.quieto .alba-escena{position:relative}
+html.quieto .esc-tramo{height:auto!important}
+html.quieto .rv{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+<link rel="preload" as="image" href="img/edicion-premium.webp">
+<link rel="preload" as="image" href="img/edicion-blanca.webp">
+<link rel="preload" as="image" href="img/centenario.webp">
+<link rel="preload" as="image" href="img/frasca-2x500.webp">
+</head>
+<body>
+
+
+  <svg class="cortina-borde" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d=""/></svg>
+  <button class="cortina-saltar" type="button">Saltar</button>
+</div>
+
+<!-- CABECERA -->
+<header class="cab">
+  <div class="cab-in">
+    <div class="cab-marca">
+      <button class="cab-logo" type="button" aria-expanded="false" aria-controls="menu-cat" aria-label="El Platero de Oro: abrir el menú de categorías"><img src="img/logo-crema.png" alt=""><svg class="flecha" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="cab-menu" id="menu-cat" hidden>
+        <a href="#inicio">Inicio</a>
+        <a href="#viaje">El viaje de la aceituna</a>
+        <a href="#escaparate">Nuestros aceites 500 ml</a>
+        <a href="#bf" class="m-bf">Black Friday</a>
+        <a href="#packs">Packs y lotes</a>
+        <p>Tienda</p>
+        <a href="#t-cosecha" class="m-sub">Cosecha temprana</a>
+        <a href="#t-regalos" class="m-sub">Estuches y regalos</a>
+        <a href="#t-familiar" class="m-sub">Formatos familiares</a>
+        <a href="#mesa">En tu mesa</a>
+        <a href="#tierra">Nuestras fincas</a>
+        <a href="#preguntas">Preguntas</a>
+        <a href="#profesionales">Profesionales</a>
+      </div>
+    </div>
+    <a class="cab-bf" href="#bf"><b>Black Friday</b><span class="cab-bf-f">27 – 30 nov</span><span class="cab-bf-cd"><span data-cd="lab">Empieza en</span> <strong><span data-cd="d">00</span>d <span data-cd="h">00</span>h <span data-cd="m">00</span>m <span class="seg"><span data-cd="s">00</span>s</span></strong></span></a>
+    <nav aria-label="Principal"><a href="#viaje">El viaje</a><a href="#escaparate">Aceites</a><a href="#packs">Packs</a><a href="#tienda">Tienda</a><a href="#tierra">Nuestras fincas</a></nav>
+    <button class="cab-cesta" type="button" aria-label="Abrir la cesta"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg><span class="n" aria-live="polite">0</span></button>
+  </div>
+</header>
+
+<button class="saltar-intro" type="button"><span>Saltar intro</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7"/></svg></button>
+<img class="botella-cae" src="img/edicion-premium.webp" alt="" aria-hidden="true">
+<main>
+<!-- 2 · PORTADA FIJADA -->
+<section id="inicio" class="alba-tramo" aria-label="Portada">
+  <div class="alba-escena">
+    <div class="alba-cielo cielo-noche"></div>
+    <div class="alba-cielo cielo-alba"></div>
+    <div class="alba-cielo cielo-dia"></div>
+    <div class="estrellas" aria-hidden="true"></div>
+    <svg class="alba-montes" aria-hidden="true"><path class="c1"/></svg>
+    <div class="alba-halo" aria-hidden="true"></div>
+        <div class="gota-cae" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 1C10.6 3.6 3 13.2 3 20.5A9 9 0 0 0 21 20.5C21 13.2 13.4 3.6 12 1Z"/></svg></div>
+    <div class="alba-anillo" aria-hidden="true"></div>
+    <svg class="alba-montes" aria-hidden="true"><path class="c2"/></svg>
+    <div class="alba-sol" role="img" aria-label="Olivo centenario dibujado en oro"><svg viewBox="330 180 620 545" aria-hidden="true"></svg></div>
+    <svg class="alba-montes" aria-hidden="true"><path class="c3"/><path class="alba-linea" pathLength="1"/></svg>
+    <div class="alba-logo"><img src="img/logo-oro.png" alt="El Platero de Oro"><p class="alba-lema" data-lema="Cosecha temprana · Jaén"></p></div>
+    <div class="alba-final">
+      <p class="kicker">Nueva cosecha 2026/27</p>
+      <h1><span class="scr">Oro líquido de Jaén</span>Cosecha temprana</h1>
+      <p>Aceite de oliva virgen extra de nuestras fincas familiares, extraído en frío y embotellado con nuestra marca.</p>
+      <div class="acc"><a class="btn btn-oro" href="#escaparate">Ver los aceites</a><a class="btn btn-claro" href="#packs">Packs y regalos</a></div>
+    </div>
+    <div class="alba-pista" aria-hidden="true">Desliza<i></i></div>
+  </div>
+</section>
+
+
+
+<!-- EL VIAJE DE LA ACEITUNA (seguido, fijado) -->
+<section id="viaje" class="vjt" aria-label="El viaje de la aceituna, del olivo a tu mesa">
+  <div class="vjt-escena">
+    <svg class="vj-mundo" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Ilustración: paisanos varean el olivo, el tractor lleva la aceituna a la almazara, sale el aceite, viaja en cisterna a la nave, se embotella y la furgoneta de reparto lo trae"></svg>
+    <div class="vjt-panel" aria-live="polite">
+      <div class="vjt-paso"><p class="kicker">Del olivo a tu mesa</p><h2>La<span class="scr">recogida</span></h2><p>Entre olivos centenarios varean las ramas y la aceituna cae al manto. Una mano coge la mejor y la echa al remolque.</p></div>
+      <div class="vjt-paso"><p class="kicker">Sin perder tiempo</p><h2>Rumbo a la<span class="scr">almazara</span></h2><p>El tractor sale cargado del olivar y la aceituna va directa a molerse.</p></div>
+      <div class="vjt-paso"><p class="kicker">En la almazara</p><h2>Se muele<span class="scr">en frío</span></h2><p>Se limpia, se muele y se bate con calma, como dice nuestra etiqueta.</p></div>
+      <div class="vjt-paso"><p class="kicker">Oro líquido</p><h2>Sale<span class="scr">a chorro</span></h2><p>Y entonces sale: verde, dorado y con todo el olor del campo.</p></div>
+      <div class="vjt-paso"><p class="kicker">En cisterna</p><h2>A nuestra<span class="scr">nave</span></h2><p>Viaja hasta nuestros depósitos, donde descansa hasta que llega su momento.</p></div>
+      <div class="vjt-paso"><p class="kicker">Con nuestro sello</p><h2>El<span class="scr">embotellado</span></h2><p>Botella a botella: se llena, se tapa y se etiqueta con nuestra marca.</p></div>
+      <div class="vjt-paso"><p class="kicker">Directo del productor</p><h2>Hasta tu<span class="scr">mesa</span></h2><p>Nuestra furgoneta te lo lleva a casa. Envío gratis desde 50 €. Sigue bajando y elige el tuyo.</p></div>
+    </div>
+    <div class="vjt-rail" aria-hidden="true"><span class="vjt-lleno"></span><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- 3 · ESCAPARATE FIJADO -->
+<section id="escaparate" class="esc-tramo" aria-label="Nuestros aceites">
+  <div class="esc-escena">
+    <div class="esc-palabra" aria-hidden="true"></div>
+    <div class="esc-botellas"></div>
+    <div class="esc-ficha"><p class="kicker" style="color:inherit;opacity:.7" data-f="kicker"></p><h3 data-f="nombre"></h3><p data-f="texto"></p><div class="chips" data-f="chips"></div></div>
+    <div class="esc-compra"><div><div class="esc-precio" data-f="precio"></div><div class="esc-litro" data-f="litro"></div></div><button class="btn esc-btn" type="button" data-add-esc><span>Añadir a la cesta</span></button></div>
+    <div class="esc-num" aria-hidden="true"></div>
+  </div>
+</section>
+
+
+
+<!-- BLACK FRIDAY -->
+<section id="bf" class="bf">
+  <div class="wrap">
+    <h2 class="h2"><span class="scr">Oro líquido para regalar</span>Black Friday</h2>
+    <p class="bf-txt">Nuestras ofertas del año en estuches, lotes y regalos de empresa. Del viernes 27 al lunes 30 de noviembre, mientras quede cosecha.</p>
+    <p class="bf-lab" data-cd="lab">Empieza en</p>
+    <div class="cuenta"><div><b data-cd="d">00</b><span>Días</span></div><div><b data-cd="h">00</b><span>Horas</span></div><div><b data-cd="m">00</b><span>Minutos</span></div><div><b data-cd="s">00</b><span>Segundos</span></div></div>
+    <div class="bf-dias">
+      <div class="bf-dia on"><b>27</b><div><small>Viernes · noviembre</small><strong>Black Friday</strong><span>Empiezan las ofertas</span></div></div>
+      <div class="bf-dia"><b>30</b><div><small>Lunes · noviembre</small><strong>Cyber Monday</strong><span>Último día, hasta las 23:59</span></div></div>
+    </div>
+    <a class="btn btn-oro" href="#packs">Ver packs y estuches</a>
+  </div>
+</section>
+
+
+
+<!-- 5 · PACKS -->
+<section id="packs" class="sec packs">
+  <div class="wrap">
+    <p class="kicker">Cuanto más llevas, menos pagas</p>
+    <h2 class="h2"><span class="scr">Packs y lotes</span>para toda la casa</h2>
+    <div class="rejilla"></div>
+    <p class="nota">Descuentos por cantidad no acumulables a otras ofertas o promociones.</p>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- TIENDA (clara) -->
+<section id="tienda" class="tienda" aria-label="Todos los productos">
+  <div class="wrap">
+    <p class="kicker">Toda la tienda</p>
+    <h2 class="h2"><span class="scr">Elige el tuyo</span>Nuestros productos</h2>
+    <div data-tienda></div>
+  </div>
+</section>
+
+
+
+<!-- EN TU MESA -->
+<section id="mesa" class="mesa" aria-label="En tu mesa">
+  <div class="wrap" style="text-align:center">
+    <p class="kicker">Del campo a la mesa</p>
+    <h2 class="h2"><span class="scr">En tu</span>mesa</h2>
+    <div class="mesa-fotos" style="text-align:left">
+      <figure><img src="img/mesa-100ml.webp" alt="Botellitas de 100 ml de El Platero de Oro en una cesta con ramas de olivo"><figcaption>Miniaturas para detalles</figcaption></figure>
+      <figure><img src="img/mesa-blanca.webp" alt="Edición Blanca junto a tomates y pan"><figcaption>Edición Blanca</figcaption></figure>
+      <figure><img src="img/mesa-centenario.webp" alt="Olivar Centenario con tostadas y tomate"><figcaption>Olivar Centenario</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- NUESTRA TIERRA -->
+<section id="tierra" class="tierra" aria-label="Nuestra tierra">
+  <div class="wrap tierra-in">
+    <div class="tierra-foto"><img src="img/finca-tractor.webp" alt="Agricultor con la camiseta de El Platero de Oro conduciendo el tractor entre olivos"></div>
+    <div>
+      <p class="kicker">Nuestra tierra</p>
+      <h2 class="h2"><span class="scr">Nace entre</span>olivos de Jaén</h2>
+      <p class="t">El Platero de Oro nace de un agricultor que cuida sus olivares con pasión y dio a su aceite el nombre de su finca. Detrás hay varias generaciones de una familia de agricultores.</p>
+      <div class="fincas"><div><b>Finca El Platero</b><span>La Pedriza, Alcalá la Real</span></div><div><b>Cortijo San Bernardo</b><span>Larva, Sierra Mágina</span></div></div>
+      <a class="btn btn-oro" href="#viaje">Vuelve a ver el viaje</a>
+    </div>
+  </div>
+</section>
+
+<!-- PREGUNTAS -->
+<section id="preguntas" class="sec faq">
+  <div class="wrap faq-in">
+    <div><h2 class="h2" style="font-size:clamp(36px,4vw,52px)"><span class="scr">Lo que</span>nos preguntáis</h2></div>
+    <div>
+      <details><summary>¿Qué significa «cosecha temprana»?</summary><p>Que recogemos la aceituna al principio de la campaña, todavía verde: más frutado, con notas verdes y un amargor y picor equilibrados.</p></details>
+      <details><summary>¿Dónde se produce El Platero de Oro?</summary><p>En nuestras fincas familiares de Jaén: El Platero, en La Pedriza (Alcalá la Real), y el Cortijo San Bernardo, en Larva (Sierra Mágina).</p></details>
+      <details><summary>¿Qué diferencia hay entre Premium, Blanca y Centenario?</summary><p>Premium es un Picual de cosecha temprana; la Edición Blanca, un Hojiblanca más suave; Centenario, un Picual de olivos centenarios.</p></details>
+      <details><summary>¿Cómo conservo el aceite una vez abierto?</summary><p>En un lugar fresco y oscuro, lejos de los fogones y bien cerrado.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- PROFESIONALES -->
+<section id="profesionales" class="pro" aria-label="Profesionales">
+  <div class="wrap">
+    <h2>¿Tienda, restaurante o distribuidor?<span class="scr">Hablemos.</span></h2>
+    <p>Precios por volumen, garrafas para cocina y estuches con vuestra marca para regalos de empresa.</p>
+    <a class="btn btn-negro" href="mailto:info@elplaterodeoro.com?subject=Tarifas%20para%20profesionales">Tarifas para profesionales</a>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <svg aria-hidden="true" preserveAspectRatio="none"><path class="rel" fill="#000"/><path class="perfil-linea" pathLength="1" style="stroke-dashoffset:0;stroke:rgba(212,167,44,.6)"/></svg>
+  <div class="wrap pie-in">
+    <img src="img/logo-oro.png" alt="El Platero de Oro">
+    <nav aria-label="Tienda"><b>Tienda</b><a href="#escaparate">Aceites</a><a href="#packs">Packs y lotes</a><a href="#tienda">Toda la tienda</a><a href="#bf">Ofertas</a></nav>
+    <nav aria-label="Ayuda"><b>Ayuda</b><a href="#tierra">Nuestras fincas</a><a href="#bf">Black Friday</a><a href="mailto:info@elplaterodeoro.com">info@elplaterodeoro.com</a></nav>
+  </div>
+  <div class="wrap"><small>© El Platero de Oro · Servicios Agrícolas La Serrezuela, S.L. · Versión 3 de prueba: la cesta es de demostración y no envía pedidos.</small></div>
+</footer>
+
+
+<!-- LISTA PRIORITARIA BLACK FRIDAY -->
+<div class="lista-velo" role="dialog" aria-modal="true" aria-labelledby="lista-t" aria-hidden="true">
+  <div class="lista-caja">
+    <button class="x" type="button" aria-label="Cerrar">×</button>
+    <form class="lista-form" novalidate>
+      <p class="kicker">Black Friday · 27 – 30 nov</p>
+      <h2 id="lista-t"><span class="scr">Entra en la</span>lista prioritaria</h2>
+      <p class="int">Te avisamos antes que a nadie y optas al mayor descuento del año, mientras quede cosecha.</p>
+      <label class="c">Tu nombre<input type="text" name="nombre" autocomplete="given-name" required></label>
+      <span class="c" style="font-size:13px;color:rgba(243,234,211,.85)">¿Por dónde prefieres que te avisemos?</span>
+      <div class="via" role="radiogroup"><label><input type="radio" name="via" value="email" checked> Correo</label><label><input type="radio" name="via" value="whatsapp"> WhatsApp</label></div>
+      <label class="c"><span data-via-lab>Tu correo</span><input type="email" name="contacto" autocomplete="email" inputmode="email" required></label>
+      <label class="acepto"><input type="checkbox" name="acepto" required><span>Quiero unirme a la lista prioritaria del Black Friday y acepto que El Platero de Oro me escriba por <b data-via-txt>correo</b> para avisarme de las ofertas. Puedo darme de baja cuando quiera. <a href="#" style="color:inherit">Política de privacidad</a>.</span></label>
+      <p class="lista-err" aria-live="polite"></p>
+      <button class="btn btn-oro" type="submit">Unirme a la lista</button>
+      <button class="no-quiero" type="button">No quiero descuentos</button>
+    </form>
+    <div class="lista-ok" hidden><span style="font-size:40px">✓</span><b>¡Ya estás en la lista!</b><p class="int" style="margin:0 0 16px">Te avisaremos antes del 27 de noviembre. <br><small>(Versión de prueba: no se guarda ni se envía ningún dato.)</small></p><button class="btn btn-oro" type="button" data-cerrar>Seguir viendo la web</button></div>
+  </div>
+</div>
+<button class="lista-fija" type="button">¿Todavía no te has añadido a la lista? Hazlo aquí</button>
+<div class="velo"></div>
+<aside class="cajon" aria-label="Cesta" aria-hidden="true">
+  <button class="cerrar" type="button" aria-label="Cerrar la cesta">×</button>
+  <h2>Tu cesta</h2>
+  <div class="nivel" aria-hidden="true"><i></i><span data-nivel>Añade 50,00 € para el envío gratis</span></div>
+  <div class="lineas"></div>
+  <div class="total"><span>Total</span><span data-total>0,00 €</span></div>
+  <button class="btn btn-oro" type="button" onclick="alert('Demostración: aquí iría el pago en Shopify.')">Finalizar compra</button>
+</aside>
+
+<script>
+(() => {
+"use strict";
+/* ═══ utilidades ═══ */
+const $ = (q, el = document) => el.querySelector(q);
+const $$ = (q, el = document) => [...el.querySelectorAll(q)];
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const suave = (t) => t * t * (3 - 2 * t);
+const f1 = (n) => n.toFixed(1);
+const eur = (n) => n.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+const html = document.documentElement;
+const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+html.classList.toggle("quieto", quieto);
+const GOTA = '<svg viewBox="0 0 24 32"><path d="M12 1C10.6 3.6 3 13.2 3 20.5A9 9 0 0 0 21 20.5C21 13.2 13.4 3.6 12 1Z"/></svg>';
+
+/* ═══ el perfil de la sierra (muestreado del logo, x = i/120, y 0 = pico) ═══ */
+const P = [1, 0.961, 0.931, 0.903, 0.876, 0.849, 0.823, 0.796, 0.77, 0.744, 0.698, 0.677, 0.663, 0.638, 0.619, 0.604, 0.586, 0.565, 0.54, 0.51, 0.475, 0.43, 0.374, 0.325, 0.283, 0.245, 0.208, 0.175, 0.144, 0.112, 0.076, 0.037, 0.013, 0.004, 0, 0.002, 0.011, 0.026, 0.034, 0.035, 0.037, 0.043, 0.051, 0.061, 0.073, 0.086, 0.099, 0.112, 0.124, 0.137, 0.149, 0.16, 0.168, 0.173, 0.178, 0.186, 0.199, 0.218, 0.242, 0.262, 0.276, 0.287, 0.297, 0.307, 0.316, 0.33, 0.355, 0.366, 0.365, 0.359, 0.348, 0.343, 0.343, 0.344, 0.347, 0.347, 0.332, 0.315, 0.309, 0.313, 0.323, 0.334, 0.347, 0.36, 0.374, 0.389, 0.404, 0.42, 0.438, 0.455, 0.473, 0.492, 0.511, 0.53, 0.55, 0.569, 0.589, 0.609, 0.629, 0.65, 0.67, 0.691, 0.712, 0.737, 0.771, 0.782, 0.79, 0.811, 0.829, 0.847, 0.864, 0.881, 0.897, 0.912, 0.926, 0.939, 0.952, 0.964, 0.976, 0.988, 1].map((y, i, a) => [i / (a.length - 1), y]);
+function sierra(W, H, { x0 = 0, x1 = 1, top = .5, alto = .4, espejo = false } = {}) {
+  const pts = P.map(([x, y]) => [(x0 + (espejo ? 1 - x : x) * (x1 - x0)) * W, (top + y * alto) * H]);
+  return espejo ? pts.reverse() : pts;
+}
+const linea = (pts) => "M" + pts.map(([x, y]) => f1(x) + " " + f1(y)).join("L");
+function relleno(copias, W, H, base = 1) {
+  let d = "";
+  for (const pts of copias) d += linea(pts) + `L${f1(pts.at(-1)[0])} ${f1(H + 60)}L${f1(pts[0][0])} ${f1(H + 60)}Z`;
+  return d + `M-60 ${f1(base * H)}H${f1(W + 60)}V${f1(H + 60)}H-60Z`;
+}
+function cresta(xs, { x0 = 0, x1 = 1, top = .5, alto = .4 } = {}) {
+  const u = clamp((xs - x0) / (x1 - x0));
+  return top + P[Math.round(u * (P.length - 1))][1] * alto;
+}
+/* pinta un perfil adaptado a su caja y lo rehace al cambiar el ancho */
+function perfilEn(svg, opc = {}) {
+  const lin = $(".perfil-linea", svg), rel = $(".rel", svg);
+  let ancho = -1;
+  const pintar = () => {
+    const w = svg.clientWidth, h = svg.clientHeight;
+    if (!w || !h || Math.abs(w - ancho) < 1) return;
+    ancho = w;
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    const pts = sierra(w, h, { top: .06, alto: .88, ...opc });
+    if (lin) lin.setAttribute("d", linea(pts));
+    if (rel) rel.setAttribute("d", relleno([pts], w, h, 1));
+  };
+  pintar();
+  new ResizeObserver(pintar).observe(svg);
+}
+/* añade una clase una sola vez cuando el elemento entra en pantalla */
+function alLlegar(els, clase = "visible", margen = "0px 0px -12% 0px") {
+  const l = [...els];
+  if (!("IntersectionObserver" in window) || quieto) { l.forEach((e) => e.classList.add(clase)); return; }
+  const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) { e.target.classList.add(clase); io.unobserve(e.target); } }, { rootMargin: margen });
+  l.forEach((e) => io.observe(e));
+}
+/* un solo bucle de scroll para todos los bloques (requestAnimationFrame) */
+const alScroll = [];
+let pendiente = false;
+const tick = () => { pendiente = false; alScroll.forEach((f) => f()); };
+addEventListener("scroll", () => { if (!pendiente) { pendiente = true; requestAnimationFrame(tick); } }, { passive: true });
+addEventListener("resize", () => requestAnimationFrame(tick));
+/* progreso 0→1 de un tramo fijado (sticky): 0 cuando su parte de arriba toca el techo, 1 al soltarse */
+const progresoDe = (tramo) => clamp((-tramo.getBoundingClientRect().top) / Math.max(1, tramo.offsetHeight - innerHeight));
+
+/* ═══ 1 · CORTINA ═══ */
+function cortina(alAbrirse) {
+  const c = $(".cortina");
+  const fuera = () => { c.remove(); alAbrirse(); };
+  if (quieto || sessionStorage.getItem?.("cortina-vista")) { fuera(); return; }
+  try { sessionStorage.setItem("cortina-vista", "1"); } catch (e) {}
+  const W = 1000;
+  $(".cortina-sierra path").setAttribute("d", linea(sierra(W, 200, { top: .05, alto: .9 })));
+  const pts = sierra(W, 100, { top: 0, alto: 1 }).map(([x, y]) => [x, 100 - y]);
+  $(".cortina-borde path").setAttribute("d", `M0 0H${W}V${f1(pts.at(-1)[1])}` + pts.slice().reverse().map(([x, y]) => `L${f1(x)} ${f1(y)}`).join("") + "Z");
+  let hecho = false;
+  const subir = () => { if (hecho) return; hecho = true; c.classList.add("sube"); alAbrirse(); setTimeout(() => c.remove(), 1100); };
+  requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add("dibuja")));
+  setTimeout(subir, 1900);
+  $(".cortina-saltar").onclick = subir;
+}
+
+/* ═══ 2 · PORTADA: noche → alba → día ═══ */
+function alba() {
+  const tramo = $(".alba-tramo"), esc = $(".alba-escena");
+  const montes = $$(".alba-montes", esc);
+  const c1 = $(".c1", esc), c2 = $(".c2", esc), c3 = $(".c3", esc), lin = $(".alba-linea", esc);
+  const [, cAlba, cDia] = $$(".alba-cielo", esc);
+  const estrellas = $(".estrellas", esc), halo = $(".alba-halo", esc), sol = $(".alba-sol", esc);
+  const logo = $(".alba-logo", esc), fin = $(".alba-final", esc), pista = $(".alba-pista", esc);
+  const gota = $(".gota-cae", esc), anillo = $(".alba-anillo", esc);
+  // lema letra a letra
+  const lema = $("[data-lema]", esc); let i = 0;
+  lema.innerHTML = `<span class="sr-only">${lema.dataset.lema}</span><span aria-hidden="true">` + [...lema.dataset.lema].map((ch) => ch === " " ? " " : `<span class="car" style="--i:${i++}">${ch}</span>`).join("") + "</span>";
+  // estrellas deterministas
+  let sem = 7; const azar = () => (sem = (sem * 16807) % 2147483647) / 2147483647;
+  estrellas.innerHTML = Array.from({ length: 60 }, () => `<i style="left:${(azar() * 100).toFixed(2)}%;top:${(azar() * 100).toFixed(2)}%;opacity:${(.3 + azar() * .7).toFixed(2)}"></i>`).join("");
+  let W = 0, H = 0, movil = false;
+  function medir() {
+    W = esc.clientWidth; H = esc.clientHeight; movil = W < 760;
+    for (const s of montes) s.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    c1.setAttribute("d", relleno([sierra(W, H, { x0: -.25, x1: .55, top: .44, alto: .3, espejo: true }), sierra(W, H, { x0: .3, x1: 1.2, top: .4, alto: .34 })], W, H, .68));
+    c2.setAttribute("d", relleno([sierra(W, H, { x0: -.6, x1: .45, top: .6, alto: .26, espejo: true }), sierra(W, H, { x0: .19, x1: 1.29, top: .55, alto: .3 })], W, H, .84));
+    const pts = sierra(W, H, movil ? { x0: -.3, x1: 1.3, top: .6, alto: .3 } : { x0: -.25, x1: 1.1, top: .52, alto: .36 });
+    c3.setAttribute("d", relleno([pts], W, H, .98));
+    lin.setAttribute("d", linea(pts));
+  }
+  let cayo = false;
+  function pintar(p) {
+    const a = suave(clamp((p - .04) / .38)), d = suave(clamp((p - .42) / .38));
+    cAlba.style.opacity = a.toFixed(3); cDia.style.opacity = d.toFixed(3);
+    estrellas.style.opacity = (1 - clamp(p / .3)).toFixed(3);
+    c1.style.transform = `translateY(${f1((1 - p) * H * .05)}px)`;
+    c2.style.transform = `translateY(${f1((1 - p) * H * .1)}px)`;
+    c3.style.transform = `translateY(${f1((1 - p) * H * .16)}px)`;
+    lin.style.transform = c3.style.transform;
+    lin.style.strokeDashoffset = (1 - suave(clamp((p - .02) / .3))).toFixed(4);
+    // el olivo se dibuja sobre la cresta al amanecer y, de día, se aparta a un lado; el sol sube detrás
+    const s = clamp((p - .26) / .42), lado = suave(clamp((p - .6) / .22));
+    const opc = movil ? { x0: -.3, x1: 1.3, top: .6, alto: .3 } : { x0: -.25, x1: 1.1, top: .52, alto: .36 };
+    const xr = lerp(.5, movil ? .8 : .72, lado), x = W * xr;
+    const yc = cresta(xr, opc) * H + (1 - p) * H * .16;
+    const bh = sol.offsetHeight, bw = sol.offsetWidth, sc = lerp(1, movil ? .8 : .95, lado);
+    sol.style.transform = `translate3d(${f1(x - bw / 2)}px,${f1(yc - bh + bh * .03)}px,0) scale(${sc.toFixed(3)})`;
+    sol.style.visibility = s < .002 ? "hidden" : "";
+    if (window.__arbolPortada) window.__arbolPortada(s);
+    const sube = suave(clamp((p - .06) / .64));
+    const yS = lerp(H * .9, H * (movil ? .16 : .14), sube);
+    halo.style.transform = `translate3d(${f1(x - 310)}px,${f1(yS - 310)}px,0) scale(${(.6 + sube * .5).toFixed(3)})`;
+    halo.style.opacity = (clamp((p - .06) / .3) * (1 - d * .3)).toFixed(3);
+    const sal = suave(clamp((p - .28) / .16));
+    logo.style.transform = `translate(-50%,calc(-50% - ${f1(sal * 40)}px))`;
+    logo.style.opacity = (1 - sal).toFixed(3);
+    logo.style.visibility = sal > .99 ? "hidden" : "";
+    pista.style.opacity = (1 - clamp(p / .1)).toFixed(3);
+    const e = clamp((p - .74) / .18);
+    fin.style.opacity = suave(e).toFixed(3);
+    fin.style.transform = `translateY(${f1((1 - e) * 30)}px)`;
+    fin.style.visibility = e < .01 ? "hidden" : "visible";
+    if (p > .9 && !cayo && !quieto) {
+      cayo = true;
+      const o = $(".alba-oliva", esc);
+      if (o && o.animate) o.animate([{ transform: "translate(875px,532px) scale(1)" }, { transform: "translate(875px,532px) scale(1.6)" }, { transform: "translate(875px,532px) scale(1)" }], { duration: 1200, easing: "ease-in-out" });
+    }
+    // cabecera: transparente sobre la noche, sólida después
+    html.classList.toggle("cab-solida", tramo.getBoundingClientRect().bottom < innerHeight * .6 || p > .55);
+  }
+  medir();
+  if (quieto) { pintar(1); return; }
+  const f = () => pintar(progresoDe(tramo));
+  alScroll.push(f); f();
+  let aw = innerWidth;
+  new ResizeObserver(() => { if (innerWidth === aw) return; aw = innerWidth; medir(); f(); }).observe(esc);
+}
+
+/* ═══ datos de producto (catálogo, precios web) ═══ */
+const ED = [
+  { id: "premium", nombre: "Edición Premium", palabra: "Picual", kicker: "01 · Cosecha temprana", texto: "Frutado intenso, con amargor y picor equilibrados. La más nuestra.", chips: ["Picual", "500 ml", "Extracción en frío"], precio: 18.99, litros: .5, img: "img/edicion-premium.webp", fondo: "#121110", texto2: "#F3EAD3" },
+  { id: "blanca", nombre: "Edición Blanca", palabra: "Hojiblanca", kicker: "02 · Cosecha temprana", texto: "Más suave y dulce, para quien empieza con el AOVE de cosecha temprana.", chips: ["Hojiblanca", "500 ml", "Extracción en frío"], precio: 18.99, litros: .5, img: "img/edicion-blanca.webp", fondo: "#EAE3D2", texto2: "#17150B" },
+  { id: "centenario", nombre: "Olivar Centenario", palabra: "Centenario", kicker: "03 · Olivos centenarios", texto: "Picual de olivos centenarios: cuerpo, matices y mucha historia.", chips: ["Picual", "500 ml", "Olivos centenarios"], precio: 18.99, litros: .5, img: "img/centenario.webp", fondo: "#7A1420", texto2: "#F3EAD3" },
+  { id: "frasca", nombre: "Frasca Edición Limitada", palabra: "Frasca", kicker: "04 · Edición limitada", texto: "La frasca de cristal con corcho, para ver el verde del aceite nuevo.", chips: ["2 × 500 ml", "Cristal", "Edición limitada"], precio: 29.60, litros: 1, img: "img/frasca-2x500.webp", fondo: "#C29A3E", texto2: "#17150B" }
+];
+
+/* ═══ 3 · ESCAPARATE FIJADO ═══ */
+function escaparate() {
+  const tramo = $(".esc-tramo"), escn = $(".esc-escena"), pal = $(".esc-palabra"), caja = $(".esc-botellas"), num = $(".esc-num");
+  const n = ED.length;
+  tramo.style.height = (1.5 + n) * 100 + "vh";
+  caja.innerHTML = ED.map((e) => `<img class="esc-botella" src="${e.img}" alt="${e.nombre}">`).join("");
+  num.innerHTML = ED.map(() => "<i></i>").join("");
+  const bots = $$(".esc-botella", caja), marcas = $$("i", num);
+  const F = Object.fromEntries($$("[data-f]", escn).map((e) => [e.dataset.f, e]));
+  let actual = -1;
+  function ficha(i) {
+    if (i === actual) return; actual = i;
+    const e = ED[i];
+    escn.style.backgroundColor = e.fondo; escn.style.color = e.texto2; escn.style.setProperty("--esc-fondo", e.fondo); escn.style.setProperty("--esc-texto", e.texto2);
+    F.kicker.textContent = e.kicker; F.nombre.textContent = e.nombre; F.texto.textContent = e.texto;
+    F.chips.innerHTML = e.chips.map((c) => `<span>${c}</span>`).join("");
+    F.precio.textContent = eur(e.precio); F.litro.textContent = eur(e.precio / e.litros) + "/L";
+    $("[data-add-esc]").dataset.id = e.id;
+    pal.textContent = (e.palabra + " · ").repeat(3);
+    marcas.forEach((m, k) => m.classList.toggle("on", k === i));
+  }
+  function pintar(p) {
+    const t = p * (n - .001); // posición continua 0 … n
+    const i = Math.min(n - 1, Math.floor(t + .5));
+    ficha(i);
+    bots.forEach((b, k) => {
+      const dlt = t - k; // <0 aún no llega, >0 ya se fue
+      const salir = clamp((dlt - .25) / .5), entrar = clamp((-dlt - .25) / .5);
+      const rot = salir * -70 + entrar * 70, y = salir * -60 + entrar * 60, op = 1 - Math.max(salir, entrar) * 1.25;
+      b.style.transform = `translate(-50%,-50%) translateY(${f1(y)}vh) rotate(${f1(rot)}deg) scale(${(1 - Math.abs(dlt) * .15).toFixed(3)})`;
+      b.style.opacity = clamp(op).toFixed(3);
+    });
+    pal.style.transform = `translateY(-50%) translateX(${f1(-t * 18 - 5)}%)`;
+  }
+  if (quieto) { pintar(0); return; }
+  const f = () => pintar(progresoDe(tramo));
+  alScroll.push(f); f();
+  // con el teclado: al enfocar el botón de compra no hace falta avanzar; las flechas no se capturan
+}
+
+/* ═══ 4 · PESTAÑAS (patrón ARIA tablist) ═══ */
+function pestanas() {
+  const datos = {
+    Aceites: [["Frasca 2 × 500 ml", 29.60, 1, "img/frasca-2x500.webp"], ["Edición Premium 500 ml", 18.99, .5, "img/edicion-premium.webp"], ["Pack 2 × 100 ml", 13.15, .2, "img/pack-100ml.webp"]],
+    Garrafas: [["Garrafa 2 L sin filtrar", 14.80, 2, "img/sin-filtrar-2l.webp"], ["Pack Esencial", 29.60, 4, "img/pack-esencial.webp"], ["Caja 3 garrafas de 5 L", 105.21, 15, "img/garrafa-5l.webp"]],
+    Regalos: [["Estuche Individual", 20.79, .5, "img/estuche-individual.webp", "img/centenario.webp"], ["Estuche Dúo de Oro", 42.68, 1, "img/estuche-duo.webp"], ["Estuche El Platero 3 × 500", 62.32, 1.5, "img/estuche-platero.webp"]],
+    Empresas: [["Lote 6 botellas", 96.85, 3, "img/lote-6.webp"], ["Lote 12 botellas", 182.30, 6, "img/lote-12.webp"], ["Regalo de empresa", 176.72, null, "img/pack-empresa.webp"]]
+  };
+  const tl = $(".tabs"), panel = $(".filas"), nombres = Object.keys(datos);
+  tl.innerHTML = nombres.map((n, i) => `<button class="tab" role="tab" id="tab-${i}" aria-controls="panel-elige" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${n}</button>`).join("");
+  panel.id = "panel-elige";
+  const tabs = $$(".tab", tl);
+  function elegir(i, foco) {
+    tabs.forEach((t, k) => { t.setAttribute("aria-selected", k === i); t.tabIndex = k === i ? 0 : -1; });
+    if (foco) tabs[i].focus();
+    panel.setAttribute("aria-labelledby", tabs[i].id);
+    const filas = datos[nombres[i]];
+    const pl = filas.map(([, p, l]) => (l ? p / l : 0)), max = Math.max(...pl);
+    panel.classList.remove("visible");
+    panel.innerHTML = filas.map(([n, p, l, img], k) => `<div class="fila"><img src="${img}" alt=""><div style="flex:1;min-width:0"><b>${n}</b><div class="pr"><strong>${eur(p)}</strong> · ${l ? eur(p / l) + "/L" : "listo para enviar"}</div><div class="barra"><i style="--w:${max ? Math.round(pl[k] / max * 100) : 0}%"></i></div></div></div>`).join("");
+    requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add("visible")));
+  }
+  tabs.forEach((t, i) => t.addEventListener("click", () => elegir(i)));
+  tl.addEventListener("keydown", (e) => {
+    const i = tabs.indexOf(document.activeElement); if (i < 0) return;
+    const m = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+    if (m === undefined) return;
+    e.preventDefault(); elegir((m + tabs.length) % tabs.length, true);
+  });
+  elegir(0);
+  panel.classList.remove("visible");
+  alLlegar([panel]);
+}
+
+/* ═══ 5 · TARJETAS + GOTA QUE VUELA A LA CESTA ═══ */
+const PACKS = [
+  { id: "trilogia", n: "Trilogía", sub: "Premium, Blanca y Centenario", p: 51.27, a: 56.97, img: "img/pack-trilogia.webp" },
+  { id: "lote6", n: "Lote 6", sub: "6 botellas de 500 ml", p: 96.85, a: 113.94, img: "img/lote-6.webp" },
+  { id: "lote12", n: "Lote 12", sub: "12 botellas de 500 ml", p: 182.30, a: 227.88, img: "img/lote-12.webp" },
+  { id: "degustacion", n: "Degustación", sub: "Para descubrir las tres", p: 67.28, a: 74.75, img: "img/pack-degustacion.webp" },
+  { id: "empresa", n: "Regalo de empresa", sub: "Listo para enviar", p: 176.72, a: 207.90, img: "img/pack-empresa.webp" },
+  { id: "miniaturas", n: "Miniaturas", sub: "Para detalles e invitados", p: 55.00, a: null, img: "img/miniaturas.webp" }
+];
+const CATALOGO = Object.fromEntries([...ED.map((e) => [e.id, { n: e.nombre, p: e.precio, img: e.img }]), ...PACKS.map((k) => [k.id, { n: k.n, p: k.p, img: k.img }])]);
+function tarjetas() {
+  $(".rejilla").innerHTML = PACKS.map((k) => `<article class="tarjeta foco${k.img2 ? " dos" : ""}"><div class="t-panel"><div class="t-aceite"></div><span class="f-luz"></span><span class="f-mas">Ver pack<i>→</i></span>${k.img2 ? "" : ""}${k.a ? `<span class="t-dto">−${Math.round((1 - k.p / k.a) * 100)} %</span>` : ""}<img class="f-img" src="${k.img}" alt="${k.n}" loading="eager">${k.img2 ? `<img class="f-img2" src="${k.img2}" alt="" aria-hidden="true"><span class="f-dos" aria-hidden="true"><i></i><i></i></span>` : ""}</div><div class="t-info"><h3>${k.n}</h3><span class="sub">${k.sub}</span><div class="pr">${eur(k.p)}${k.a ? `<s>${eur(k.a)}</s>` : ""}</div><button class="t-add" type="button" data-add="${k.id}">Añadir a la cesta</button></div></article>`).join("");
+
+}
+
+const ANTES = { premium2: 37.98, blanca2: 37.98, centenario2: 37.98 }; // 2 botellas de 500 ml: −5 %
+const TIENDA = [
+  ["Cosecha temprana", "Botellas de 500 ml y formatos pequeños", [
+    ["aove500", "AOVE · Cosecha Temprana", "Elige tu edición: Centenario, Premium o Hojiblanca. 500 ml.", 18.99, .5, "img/aove-trio.webp"],
+    ["premium2", "Edición Premium · 2 × 500 ml", "La botella negra, Picual de cosecha temprana.", 36.08, 1, "img/premium-x2.webp"],
+    ["blanca2", "Edición Blanca · 2 × 500 ml", "Hojiblanca, más suave y dulce.", 36.08, 1, "img/blanca-x2.webp"],
+    ["centenario2", "Olivar Centenario · 2 × 500 ml", "Picual de olivos centenarios.", 36.08, 1, "img/centenario-x2.webp"],
+    ["frasca2", "Frasca · 2 × 500 ml", "Edición limitada en cristal con corcho.", 29.60, 1, "img/frasca-2x500.webp"],
+    ["mini10", "Cosecha Temprana · 10 × 100 ml", "Para detalles, bodas e invitados.", 55.00, 1, "img/pack-10x100.webp"],
+    ["mini1", "Miniatura dorada 100 ml", "La botellita de oro, para regalar.", 5.50, .1, "img/miniatura-100.webp", "img/miniaturas.webp"]]],
+  ["Estuches y regalos", "Presentados para regalar", [
+    ["estPlatero", "Estuche El Platero de Oro", "Las tres ediciones de 500 ml.", 62.32, 1.5, "img/estuche-platero.webp", "img/aove-trio.webp"],
+    ["estDuo", "Estuche Dúo de Oro", "Dos botellas de 500 ml en su caja.", 42.68, 1, "img/estuche-duo.webp"],
+    ["estInd", "Estuche Individual", "Una botella de 500 ml en estuche negro.", 20.79, .5, "img/estuche-individual.webp"],
+    ["estMadera", "Estuche de madera", "Caja de madera con dos botellas.", 46.04, 1, "img/estuche-madera.webp"],
+    ["est250", "Estuche 250 ml", "Dos botellas de 250 ml.", 19.75, .5, "img/estuche-250.webp"],
+    ["pack100", "Pack botellas de 100 ml", "Dos miniaturas en estuche.", 13.15, .2, "img/pack-100ml.webp"]]],
+  ["Formatos familiares", "Para cocinar todos los días", [
+    ["sinf2", "Cosecha Temprana 2 L · Sin filtrar", "El aceite recién hecho, con todo su cuerpo.", 14.80, 2, "img/sin-filtrar-2l.webp"],
+    ["caja4x2", "Caja 4 × 2 L", "Cuatro garrafas de 2 litros.", 59.20, 8, "img/caja-4x2l.webp"],
+    ["caja3x5", "Caja 3 × 5 L", "Tres garrafas de 5 litros.", 105.21, 15, "img/garrafa-5l.webp"],
+    ["esencial", "Pack Esencial", "Garrafa de 2 L y frasca de 500 ml.", 29.60, 2.5, "img/pack-esencial.webp"]]]
+];
+TIENDA.forEach(([, , l]) => l.forEach(([id, n, , p, , img]) => { CATALOGO[id] = { n, p, img }; }));
+function pintarTienda() {
+  $("[data-tienda]").innerHTML = TIENDA.map(([t, sub, l]) => `<div class="t-grupo" id="${{"Cosecha temprana":"t-cosecha","Estuches y regalos":"t-regalos","Formatos familiares":"t-familiar"}[t]}"><div class="t-grupo-cab"><h3>${t}</h3><span>${sub}</span></div><div class="prods">${l.map(([id, n, d, p, lt, img, img2]) => `<article class="prod foco${img2 ? " dos" : ""}"><div class="prod-img">${ANTES[id] ? `<span class="t-dto">−5 %</span>` : ""}<span class="f-luz"></span><img class="f-img" src="${img}" alt="${n}">${img2 ? `<img class="f-img2" src="${img2}" alt="" aria-hidden="true"><span class="f-dos" aria-hidden="true"><i></i><i></i></span>` : ""}<span class="f-mas">Ver producto<i>→</i></span></div><h4>${n}</h4><p class="d">${d}</p><div class="pr">${eur(p)}${ANTES[id] ? `<s>${eur(ANTES[id])}</s>` : ""}${lt ? `<small>${eur(p / lt)}/L</small>` : ""}</div><button type="button" data-add="${id}">Añadir a la cesta</button></article>`).join("")}</div></div>`).join("");
+}
+/* lista prioritaria */
+function listaPrioritaria() {
+  const velo = $(".lista-velo"), fija = $(".lista-fija"), form = $(".lista-form"), ok = $(".lista-ok"), err = $(".lista-err");
+  const guarda = (k, v) => { try { sessionStorage.setItem(k, v); } catch (e) {} }, lee = (k) => { try { return sessionStorage.getItem(k); } catch (e) { return null; } };
+  let apuntado = lee("lista") === "si", mostrado = !!lee("listaVista"), antes = null;
+  const abrir = () => { antes = document.activeElement; velo.classList.add("on"); velo.setAttribute("aria-hidden", "false"); setTimeout(() => (apuntado ? ok.querySelector("button") : form.nombre).focus(), 60); };
+  const cerrar = () => { velo.classList.remove("on"); velo.setAttribute("aria-hidden", "true"); if (antes) antes.focus(); };
+  const via = () => form.via.value;
+  form.addEventListener("change", (e) => { if (e.target.name !== "via") return; const w = via() === "whatsapp"; const c = form.contacto; c.type = w ? "tel" : "email"; c.autocomplete = w ? "tel" : "email"; c.inputMode = w ? "tel" : "email"; c.value = ""; $("[data-via-lab]").textContent = w ? "Tu WhatsApp" : "Tu correo"; $("[data-via-txt]").textContent = w ? "WhatsApp" : "correo"; });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); const n = form.nombre.value.trim(), c = form.contacto.value.trim(), w = via() === "whatsapp";
+    if (!n) return (err.textContent = "Escribe tu nombre.", form.nombre.focus());
+    if (w ? !/^[+\d][\d\s]{8,}$/.test(c) : !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c)) return (err.textContent = w ? "Escribe un número de WhatsApp válido." : "Escribe un correo válido.", form.contacto.focus());
+    if (!form.acepto.checked) return (err.textContent = "Marca la casilla para unirte a la lista.", form.acepto.focus());
+    err.textContent = ""; apuntado = true; guarda("lista", "si"); form.hidden = true; ok.hidden = false; ok.querySelector("button").focus(); fija.classList.remove("on");
+  });
+  $(".no-quiero").addEventListener("click", cerrar);
+  $(".lista-caja .x").addEventListener("click", cerrar);
+  ok.querySelector("[data-cerrar]").addEventListener("click", cerrar);
+  velo.addEventListener("click", (e) => { if (e.target === velo) cerrar(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && velo.classList.contains("on")) cerrar(); });
+  fija.addEventListener("click", abrir);
+  alScroll.push(() => {
+    const max = document.documentElement.scrollHeight - innerHeight, f = max > 0 ? scrollY / max : 0;
+    if (!mostrado && !apuntado && f > .5) { mostrado = true; guarda("listaVista", "1"); abrir(); }
+    fija.classList.toggle("on", !apuntado && f > .93 && !velo.classList.contains("on"));
+  });
+}
+const cesta = [];
+const ENVIO_GRATIS = 50;
+function pintarCesta() {
+  const tot = cesta.reduce((a, l) => a + CATALOGO[l.id].p * l.c, 0), uds = cesta.reduce((a, l) => a + l.c, 0);
+  const nEl = $(".cab-cesta .n"); nEl.textContent = uds; nEl.classList.toggle("si", uds > 0);
+  $(".lineas").innerHTML = cesta.length ? cesta.map((l) => `<div class="linea"><img src="${CATALOGO[l.id].img}" alt=""><span>${CATALOGO[l.id].n}<br><small style="color:var(--gris)">${l.c} × ${eur(CATALOGO[l.id].p)}</small></span><b>${eur(CATALOGO[l.id].p * l.c)}</b></div>`).join("") : `<p style="color:var(--gris)">Tu cesta está vacía.</p>`;
+  $("[data-total]").textContent = eur(tot);
+  $(".nivel i").style.width = clamp(tot / ENVIO_GRATIS) * 100 + "%";
+  $("[data-nivel]").textContent = tot >= ENVIO_GRATIS ? "¡Tienes el envío gratis!" : `Añade ${eur(ENVIO_GRATIS - tot)} para el envío gratis`;
+}
+function abrirCesta(on) {
+  $(".cajon").classList.toggle("abierto", on); $(".velo").classList.toggle("on", on);
+  $(".cajon").setAttribute("aria-hidden", !on);
+  if (on) $(".cerrar").focus();
+}
+function gotaVuela(desde, alLlegar) {
+  const b = desde.getBoundingClientRect(), d = $(".cab-cesta").getBoundingClientRect();
+  if (quieto) { alLlegar(); return; }
+  const g = document.createElement("div"); g.className = "gota-vuelo"; g.innerHTML = GOTA;
+  const x0 = b.left + b.width / 2, y0 = b.top + b.height / 2, x1 = d.left + d.width / 2, y1 = d.top + d.height / 2;
+  g.style.left = x0 + "px"; g.style.top = y0 + "px"; document.body.append(g);
+  const dx = x1 - x0, dy = y1 - y0;
+  g.animate([{ transform: "translate(0,0) scale(1)" }, { transform: `translate(${dx * .5}px,${dy * .5 - 120}px) scale(1.3)`, offset: .5 }, { transform: `translate(${dx}px,${dy}px) scale(.5)` }], { duration: 620, easing: "cubic-bezier(.45,0,.25,1)", fill: "forwards" }).onfinish = () => { g.remove(); alLlegar(); const c = $(".cab-cesta"); c.classList.remove("late"); void c.offsetWidth; c.classList.add("late"); };
+}
+function anadir(id, boton) {
+  gotaVuela(boton, () => { const l = cesta.find((x) => x.id === id); if (l) l.c++; else cesta.push({ id, c: 1 }); pintarCesta(); });
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-add],[data-add-esc]");
+  if (b) anadir(b.dataset.add || b.dataset.id, b);
+});
+$(".cab-cesta").onclick = () => abrirCesta(true);
+$(".cerrar").onclick = () => abrirCesta(false);
+$(".velo").onclick = () => abrirCesta(false);
+addEventListener("keydown", (e) => { if (e.key === "Escape") abrirCesta(false); });
+
+/* ═══ 6 · RECORRIDO: camino que se llena, viajero y paradas ═══ */
+function recorrido() {
+  const sec = $(".rec");
+  perfilEn($(".rec-perfil"), { top: .1, alto: .85 });
+  const MAPA = { top: .32, alto: .68 };
+  perfilEn($(".rec-mapa svg"), MAPA);
+  $$(".lugar").forEach((l) => l.style.setProperty("--y", (cresta(+l.dataset.x, MAPA) * 100).toFixed(2) + "%"));
+  alLlegar([sec], "trazado", "0px 0px -20% 0px");
+  const caja = $(".rec-camino"), ruta = $(".rec-ruta"), fondo = $(".rec-fondo"), lleno = $(".rec-lleno"), viajero = $(".viajero");
+  const paradas = $$(".parada", caja);
+  const CAMBIO = 3; // en la parada 3 (almazara) la aceituna se convierte en gota
+  let lut = [], total = 1, centros = [], umbralY = Infinity;
+  function medir() {
+    const w = caja.clientWidth, h = caja.clientHeight; if (!w || !h) return;
+    ruta.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    const movil = w < 760, x0 = movil ? 44 : w / 2, hueco = 160;
+    centros = paradas.map((p) => p.offsetTop + p.offsetHeight / 2);
+    const pts = [[x0, 0], ...centros.map((y, i) => [movil ? x0 : x0 + (i % 2 ? 1 : -1) * hueco * .3, y]), [x0, h]];
+    let d = `M${f1(pts[0][0])} ${f1(pts[0][1])}`;
+    for (let i = 1; i < pts.length; i++) { const [xa, ya] = pts[i - 1], [xb, yb] = pts[i], my = (ya + yb) / 2; d += `C${f1(xa)} ${f1(my)} ${f1(xb)} ${f1(my)} ${f1(xb)} ${f1(yb)}`; }
+    fondo.setAttribute("d", d); lleno.setAttribute("d", d);
+    total = lleno.getTotalLength() || 1;
+    lut = []; for (let i = 0; i <= 300; i++) { const l = total * i / 300, q = lleno.getPointAtLength(l); lut.push([l, q.x, q.y]); }
+    lleno.style.strokeDasharray = `${f1(total)} ${f1(total + 20)}`;
+    umbralY = centros[CAMBIO - 1];
+  }
+  function enY(y) {
+    if (y <= lut[0][2]) return lut[0];
+    if (y >= lut.at(-1)[2]) return lut.at(-1);
+    let lo = 0, hi = lut.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (lut[m][2] < y) lo = m; else hi = m; }
+    const p = lut[lo], q = lut[hi], t = (y - p[2]) / Math.max(.001, q[2] - p[2]);
+    return [lerp(p[0], q[0], t), lerp(p[1], q[1], t), lerp(p[2], q[2], t)];
+  }
+  function pintar() {
+    if (!lut.length) return;
+    // «línea de lectura» en el centro de la pantalla; cerca del final baja hasta el borde inferior
+    const r = caja.getBoundingClientRect(), vh = innerHeight;
+    const resta = html.scrollHeight - (scrollY + vh);
+    const yc = quieto ? Infinity : vh * (.5 + .5 * clamp(1 - resta / (vh * .5))) - r.top;
+    const e = enY(yc);
+    lleno.style.strokeDashoffset = f1(total - e[0]);
+    viajero.style.transform = `translate(${f1(e[1])}px,${f1(e[2])}px)`;
+    viajero.classList.toggle("es-gota", e[2] >= umbralY);
+    paradas.forEach((p, i) => p.classList.toggle("on", yc > centros[i] - p.offsetHeight * .45));
+  }
+  medir(); pintar();
+  let medida = "";
+  new ResizeObserver(() => { const m = caja.clientWidth + "x" + caja.clientHeight; if (m === medida) return; medida = m; medir(); pintar(); }).observe(caja);
+  alScroll.push(pintar);
+}
+
+/* ═══ cuenta atrás del Black Friday ═══ */
+function cuentaAtras() {
+  const ini = Date.parse("2026-11-27T00:00:00+01:00"), fin = Date.parse("2026-11-30T23:59:59+01:00");
+  const pad = (n) => String(n).padStart(2, "0");
+  const f = () => {
+    const now = Date.now(); let lab = "Empieza en", ms = ini - now;
+    if (ms <= 0) { lab = "Termina en"; ms = fin - now; }
+    if (ms <= 0) { lab = "Ofertas terminadas"; ms = 0; }
+    const t = Math.floor(ms / 1000), v = { lab, d: pad(Math.floor(t / 86400)), h: pad(Math.floor(t / 3600) % 24), m: pad(Math.floor(t / 60) % 60), s: pad(t % 60) };
+    $$("[data-cd]").forEach((el) => (el.textContent = v[el.dataset.cd]));
+  };
+  f(); setInterval(f, 1000);
+}
+
+/* ═══ menú desplegable del logo ═══ */
+function menuLogo() {
+  const btn = $(".cab-logo"), menu = $("#menu-cat");
+  const abrir = (si) => { btn.setAttribute("aria-expanded", si); menu.hidden = !si; if (si) menu.querySelector("a").focus({ preventScroll: true }); };
+  btn.addEventListener("click", (e) => { e.stopPropagation(); abrir(menu.hidden); });
+  menu.addEventListener("click", (e) => { if (e.target.closest("a")) abrir(false); });
+  document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".cab-marca")) abrir(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { abrir(false); btn.focus(); } });
+}
+
+/* ═══ arranque ═══ */
+menuLogo(); alba(); escaparate(); tarjetas(); pintarTienda(); listaPrioritaria(); cuentaAtras(); pintarCesta();
+alLlegar($$(".rv"));
+const pie = $(".pie svg"); perfilEn(pie, { top: .15, alto: .8 });
+html.classList.add("listo");
+})();
+</script>
+<script>
+/* ═══ EL VIAJE DE LA ACEITUNA · escenas hacia abajo ═══ */
+(() => {
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const suave = (t) => t * t * (3 - 2 * t);
+const seg = (p, a, b) => cl((p - a) / (b - a));
+function kf(p, arr) { if (p <= arr[0][0]) return arr[0][1]; for (let i = 1; i < arr.length; i++) { if (p <= arr[i][0]) { const a = arr[i - 1], b = arr[i]; return lerp(a[1], b[1], suave((p - a[0]) / (b[0] - a[0]))); } } return arr[arr.length - 1][1]; }
+const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ORO = "#D4A72C", ORC = "#F0CF6A", CRE = "#F3EAD3", TIN = "#17150B", OSC = "#8A6A17";
+const SUELO = 720;
+const BOT = "M-28,0 L28,0 Q32,0 32,-6 L32,-70 Q32,-92 14,-100 L12,-104 L12,-128 L-12,-128 L-12,-104 L-14,-100 Q-32,-92 -32,-70 L-32,-6 Q-32,0 -28,0 Z";
+function setT(e, x, y, r, s) { e.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)})${r ? ` rotate(${r.toFixed(2)})` : ""}${s != null ? ` scale(${s.toFixed(3)})` : ""}`); }
+
+/* defs compartidas (una sola vez en la página) */
+const defs = document.createElementNS(NS, "svg");
+defs.setAttribute("width", "0"); defs.setAttribute("height", "0"); defs.setAttribute("aria-hidden", "true");
+defs.style.position = "absolute";
+defs.innerHTML = `<defs>
+<radialGradient id="vj-halo"><stop offset="0" stop-color="#F0CF6A" stop-opacity=".55"/><stop offset="1" stop-color="#F0CF6A" stop-opacity="0"/></radialGradient>
+<linearGradient id="vj-chorro" x1="0" x2="1"><stop offset="0" stop-color="#8A6A17"/><stop offset=".45" stop-color="#F0CF6A"/><stop offset="1" stop-color="#B98F22"/></linearGradient>
+<linearGradient id="vj-aceite" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0CF6A"/><stop offset="1" stop-color="#9C7A1C"/></linearGradient>
+<clipPath id="vj-bot"><path d="${BOT}"/></clipPath>
+<clipPath id="vj-tinaja"><path d="M-90,0 Q-110,-60 -95,-110 Q-80,-150 -60,-160 L60,-160 Q80,-150 95,-110 Q110,-60 90,0 Z"/></clipPath>
+<clipPath id="vj-tanque"><rect x="-130" y="-205" width="370" height="120" rx="60"/></clipPath>
+<symbol id="vj-botella" overflow="visible"><path d="${BOT}"/></symbol></defs>`;
+document.body.prepend(defs);
+
+/* ── el olivo centenario (se usa en la portada y en la escena 1) ── */
+function olivo(raiz, el, dib, rnd, d0, d1) {
+  const E = el("g", {}, raiz);
+  const tronco = "M520,720 C545,650 500,600 545,540 C575,495 560,465 590,425 L640,425 C665,480 650,520 680,565 C715,615 670,665 705,720";
+  const relleno = el("path", { d: tronco + " Z", fill: TIN, opacity: 0 }, E);
+  dib(tronco, d0, d1, E, { "stroke-width": 4 });
+  dib("M585,650 C590,600 612,595 622,640 C618,676 592,680 585,650", d0 + .05 * (d1 - d0), d1, E, { "stroke-width": 2.5 });
+  dib("M560,560 C575,600 560,630 572,660", d0 + .1 * (d1 - d0), d1, E, { "stroke-width": 1.5, "stroke-opacity": .6 });
+  dib("M660,600 C650,640 668,670 660,700", d0 + .1 * (d1 - d0), d1, E, { "stroke-width": 1.5, "stroke-opacity": .6 });
+  const r = (d) => d0 + d * (d1 - d0);
+  dib("M600,440 C560,400 500,370 430,330", r(.2), d1, E);
+  dib("M625,430 C680,380 740,350 800,320", r(.2), d1, E);
+  dib("M640,470 C720,480 800,500 870,528", r(.25), d1, E);
+  dib("M610,430 C600,380 615,320 610,270", r(.25), d1, E);
+  dib("M600,450 C560,470 520,460 480,420", r(.25), d1, E);
+  const hojas = [];
+  const H = el("g", {}, E);
+  [[430, 320, 90], [520, 250, 95], [625, 225, 95], [735, 255, 95], [815, 325, 80], [860, 460, 62], [500, 390, 75], [700, 380, 85], [610, 330, 90]].forEach(([cx, cy, rr]) => {
+    for (let i = 0; i < 34; i++) {
+      const a = rnd() * Math.PI * 2, d = Math.sqrt(rnd()) * rr; const x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d * .8;
+      hojas.push({ e: el("ellipse", { cx: 0, cy: 0, rx: 15, ry: 4, transform: `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${(rnd() * 180).toFixed(0)})`, fill: "#3a3313", stroke: ORO, "stroke-width": 1, "stroke-opacity": .7, opacity: 0 }, H), t: rnd() });
+      if (rnd() < .06) hojas.push({ e: el("ellipse", { cx: x + 6, cy: y + 6, rx: 5, ry: 6.5, fill: "#22200e", stroke: ORC, "stroke-width": 1.2, opacity: 0 }, H), t: rnd() });
+    }
+  });
+  return { E, relleno, hojas, pintar(v) { relleno.setAttribute("opacity", cl(v * 1.4 - .2).toFixed(2)); for (const h of hojas) h.e.setAttribute("opacity", cl((v - h.t * .6) * 3).toFixed(2)); } };
+}
+
+/* utilidades para crear dibujo en un svg concreto */
+function lienzo(svg) {
+  const trazos = [];
+  let sem = 7; const rnd = () => (sem = (sem * 16807) % 2147483647) / 2147483647;
+  const el = (tag, at, padre) => { const e = document.createElementNS(NS, tag); for (const a in at) e.setAttribute(a, at[a]); (padre || svg).appendChild(e); return e; };
+  const dib = (d, a, b, padre, extra) => { const p = el("path", Object.assign({ d, class: "dib", pathLength: 1, stroke: ORO, "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round", fill: "none" }, extra || {}), padre); trazos.push({ e: p, a, b }); return p; };
+  const pintarTrazos = (p) => { for (const t of trazos) t.e.style.strokeDashoffset = (1 - suave(seg(p, t.a, t.b))).toFixed(4); };
+  return { el, dib, rnd, pintarTrazos };
+}
+
+/* ── olivo de la portada ── */
+const portada = document.querySelector(".alba-sol svg");
+if (portada) {
+  const L = lienzo(portada);
+  const ar = olivo(portada, L.el, L.dib, L.rnd, 0, .7);
+  const oli = L.el("g", { transform: "translate(875,532)", class: "alba-oliva", opacity: 0 });
+  L.el("circle", { r: 46, fill: "url(#vj-halo)" }, oli);
+  L.el("ellipse", { rx: 12, ry: 15, fill: "#2e2a10", stroke: ORC, "stroke-width": 3 }, oli);
+  L.el("ellipse", { cx: -4, cy: -5, rx: 3, ry: 4, fill: CRE, opacity: .7 }, oli);
+  window.__arbolPortada = (v) => { L.pintarTrazos(v); ar.pintar(seg(v, .15, 1)); oli.setAttribute("opacity", seg(v, .8, 1).toFixed(2)); };
+  window.__arbolPortada(0);
+}
+
+/* ═══ el mundo completo (cada escena enseña su trozo) ═══ */
+function Mundo(svg) {
+  const { el, dib, rnd, pintarTrazos } = lienzo(svg);
+  const g = (at, padre) => el("g", at || {}, padre);
+  const LEJOS = g(), CERCA = g();
+  const ts = { fill: TIN, stroke: ORO, "stroke-width": 3, "stroke-linejoin": "round" };
+  const ps = { fill: TIN, stroke: ORO, "stroke-width": 2.5, "stroke-linejoin": "round" };
+
+  for (let i = 0; i < 150; i++) el("circle", { cx: rnd() * 13000 - 800, cy: rnd() * 700 - 400, r: rnd() * 1.6 + .4, fill: CRE, opacity: (rnd() * .5 + .15).toFixed(2) }, LEJOS);
+  const luna = g({}, LEJOS); el("circle", { r: 110, fill: "url(#vj-halo)" }, luna); el("circle", { r: 34, fill: ORC, opacity: .9 }, luna);
+  let sierra = "M-1500," + SUELO;
+  for (let x = -1500; x <= 14000; x += 520) { const pk = 380 + rnd() * 120; sierra += ` L${x + 150},${SUELO - 60 - rnd() * 40} Q${x + 230},${pk + 40} ${x + 270},${pk} L${x + 300},${pk + 30} Q${x + 360},${pk + 20} ${x + 420},${SUELO - 90} L${x + 520},${SUELO - 50}`; }
+  el("path", { d: sierra + " L14000," + SUELO + " Z", fill: "#1d1a0d", stroke: OSC, "stroke-width": 1.5, opacity: .9 }, LEJOS);
+  el("rect", { x: -3000, y: SUELO, width: 18000, height: 2400, fill: "#0e0d08" }, CERCA);
+  el("line", { x1: -3000, y1: SUELO, x2: 15000, y2: SUELO, stroke: CRE, "stroke-opacity": .28, "stroke-width": 2 }, CERCA);
+  el("line", { x1: 1200, y1: SUELO + 28, x2: 13000, y2: SUELO + 28, stroke: ORO, "stroke-opacity": .35, "stroke-width": 3, "stroke-dasharray": "30 40" }, CERCA);
+
+  /* 1 · olivo, manto, vareador y peón */
+  const E1 = g({}, CERCA);
+  el("ellipse", { cx: 640, cy: 718, rx: 300, ry: 9, fill: "none", stroke: ORC, "stroke-width": 2, "stroke-dasharray": "4 7", opacity: .7 }, E1);
+  const arbol = olivo(E1, el, dib, rnd, -2, -1);
+  const caen = [...Array(12)].map((_, i) => ({ e: el("ellipse", { rx: 5, ry: 6.5, fill: "#2e2a10", stroke: ORC, "stroke-width": 1.4, opacity: 0 }, E1), x: 440 + i * 36 + rnd() * 20, y0: 280 + rnd() * 120, f: rnd() }));
+  function persona(x, mira, padre) {
+    const P = g({ transform: `translate(${x},720) scale(${mira},1)` }, padre);
+    el("path", Object.assign({ d: "M-16,0 L-14,-74 L-1,-74 L-3,0 Z" }, ps), P);
+    el("path", Object.assign({ d: "M3,0 L1,-74 L14,-74 L17,0 Z" }, ps), P);
+    el("path", Object.assign({ d: "M-20,-70 L-25,-135 Q0,-148 23,-135 L19,-70 Z" }, ps), P);
+    el("circle", Object.assign({ cx: -2, cy: -160, r: 15 }, ps), P);
+    el("ellipse", Object.assign({ cx: -2, cy: -171, rx: 36, ry: 6 }, ps), P);
+    el("path", Object.assign({ d: "M-16,-171 Q-14,-190 -2,-191 Q10,-190 12,-171 Z" }, ps), P);
+    el("path", { d: "M-24,-118 L22,-118", stroke: ORC, "stroke-width": 2, "stroke-opacity": .6 }, P);
+    return P;
+  }
+  // vareador (mira a la derecha) con la vara
+  const VAR = persona(400, -1, E1);
+  const VARA = g({}, VAR);
+  el("path", { d: "M-10,-120 L-330,-120", stroke: ORC, "stroke-width": 4, "stroke-linecap": "round" }, VARA);
+  el("path", { d: "M-19,-128 L-19,-70", stroke: ORO, "stroke-width": 9, "stroke-linecap": "round" }, VAR);
+  // peón que coge la aceituna (mira a la izquierda)
+  const PEON = persona(930, 1, E1);
+  el("path", { d: "M14,-132 L20,-75", stroke: ORO, "stroke-width": 10, "stroke-linecap": "round" }, PEON);
+  el("path", Object.assign({ d: "M24,0 L30,-34 L70,-34 L76,0 Z" }, ps), PEON);
+  el("path", { d: "M34,-34 Q50,-60 66,-34", fill: "none", stroke: ORO, "stroke-width": 2.5 }, PEON);
+  const BRAZO = g({}, PEON);
+  el("path", { d: "M-19,-130 L-19,-70", stroke: TIN, "stroke-width": 13, "stroke-linecap": "round" }, BRAZO);
+  el("path", { d: "M-19,-130 L-19,-70", stroke: ORO, "stroke-width": 3, "stroke-linecap": "round" }, BRAZO);
+  el("circle", { cx: -19, cy: -66, r: 7, fill: TIN, stroke: ORO, "stroke-width": 2.5 }, BRAZO);
+  const PIV = { x: 911, y: 590 }, LBR = 64;
+
+  /* tractor + remolque */
+  function rueda(cx, cy, r, padre) {
+    const w = g({ transform: `translate(${cx},${cy})` }, padre); const giro = g({}, w);
+    el("circle", { r, fill: TIN, stroke: ORO, "stroke-width": 5 }, giro);
+    el("circle", { r: r - 9, fill: "none", stroke: ORO, "stroke-width": 6, "stroke-dasharray": "6 9", "stroke-opacity": .55 }, giro);
+    el("circle", { r: r * .4, fill: "#2a2510", stroke: ORC, "stroke-width": 2 }, giro);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; el("line", { x1: Math.cos(a) * r * .4, y1: Math.sin(a) * r * .4, x2: Math.cos(a) * (r - 14), y2: Math.sin(a) * (r - 14), stroke: ORO, "stroke-width": 2, "stroke-opacity": .7 }, giro); }
+    return { giro, r };
+  }
+  const TRAC = g({}, CERCA);
+  const REM = g({}, TRAC);
+  el("path", { d: "M-75,-55 L-130,-55", stroke: ORO, "stroke-width": 4 }, REM);
+  const MONTON = g({}, REM);
+  for (let i = 0; i < 34; i++) el("ellipse", { cx: -320 + rnd() * 180, cy: -150 - rnd() * 26 * (1 - Math.abs((i % 17) / 17 - .5)), rx: 8, ry: 10, fill: "#2e2a10", stroke: ORC, "stroke-width": 1.5 }, MONTON);
+  el("path", Object.assign({ d: "M-335,-155 L-125,-155 L-135,-75 L-325,-75 Z" }, ts), REM);
+  el("path", { d: "M-330,-130 L-130,-130 M-328,-105 L-133,-105", stroke: ORO, "stroke-opacity": .4, "stroke-width": 2 }, REM);
+  const rR = rueda(-230, -38, 38, REM);
+  el("path", Object.assign({ d: "M40,-120 L222,-120 Q236,-118 236,-104 L236,-70 L40,-70 Z" }, ts), TRAC);
+  el("path", { d: "M60,-110 L60,-80 M80,-110 L80,-80 M100,-110 L100,-80", stroke: ORO, "stroke-opacity": .5, "stroke-width": 2 }, TRAC);
+  el("rect", Object.assign({ x: 180, y: -176, width: 9, height: 56 }, ts), TRAC);
+  el("path", { d: "M-52,-118 L-42,-250 L72,-250 L82,-118 Z", fill: "rgba(240,207,106,.07)", stroke: ORO, "stroke-width": 4 }, TRAC);
+  el("path", { d: "M15,-250 L18,-118", stroke: ORO, "stroke-width": 3 }, TRAC);
+  el("rect", Object.assign({ x: -60, y: -264, width: 150, height: 16, rx: 4 }, ts), TRAC);
+  el("path", { d: "M-88,-70 A88,88 0 0 1 88,-70", fill: "none", stroke: ORO, "stroke-width": 5 }, TRAC);
+  el("circle", { cx: 20, cy: -185, r: 13, fill: TIN, stroke: ORC, "stroke-width": 2 }, TRAC);
+  el("path", { d: "M2,-130 Q20,-172 40,-130", fill: TIN, stroke: ORC, "stroke-width": 2 }, TRAC);
+  const rT1 = rueda(0, -72, 72, TRAC), rT2 = rueda(190, -42, 42, TRAC);
+  const humos = [0, 1, 2].map(() => el("circle", { cx: 184, cy: -190, r: 10, fill: CRE, opacity: 0 }, TRAC));
+
+  /* 3 · tolva y almazara */
+  const E3 = g({}, CERCA);
+  dib("M3480,560 L3640,560 L3585,650 L3535,650 Z", .27, .31, E3, { "stroke-width": 3.5 });
+  dib("M3500,650 L3490,720 M3620,650 L3630,720", .27, .31, E3);
+  const cinta = el("path", { d: "M3560,650 L4060,520", stroke: ORC, "stroke-width": 14, "stroke-linecap": "round", "stroke-dasharray": "0 26", fill: "none", opacity: 0 }, E3);
+  dib("M3560,668 L4060,538", .30, .34, E3, { "stroke-width": 3, "stroke-opacity": .6 });
+  dib("M3950,720 L3950,420 L4750,420 L4750,720", .31, .37, E3, { "stroke-width": 4 });
+  dib("M3910,425 L4350,300 L4790,425", .32, .37, E3, { "stroke-width": 4 });
+  for (let x = 3960; x < 4740; x += 34) dib(`M${x},${425 - ((x < 4350) ? (x - 3910) : (4790 - x)) * .284 + 2} L${x},425`, .33, .38, E3, { "stroke-width": 1.5, "stroke-opacity": .4 });
+  dib("M4630,345 L4630,262 L4690,262 L4690,362", .32, .37, E3);
+  const humoA = [0, 1, 2, 3].map(() => el("circle", { cx: 4660, cy: 250, r: 14, fill: CRE, opacity: 0 }, E3));
+  [4040, 4660].forEach((x) => dib(`M${x - 36},620 L${x - 36},540 A36,36 0 0 1 ${x + 36},540 L${x + 36},620 Z`, .33, .38, E3, { "stroke-width": 3 }));
+  dib("M4230,720 L4230,570 A120,120 0 0 1 4470,570 L4470,720", .33, .38, E3, { "stroke-width": 4 });
+  const texA = el("text", { x: 4350, y: 478, "text-anchor": "middle", "font-family": "Bodoni Moda, Georgia, serif", "font-size": 40, "letter-spacing": 10, fill: CRE, opacity: 0 }, E3); texA.textContent = "ALMAZARA";
+  const MOLG = g({}, g({ transform: "translate(4350,640)" }, E3));
+  el("circle", { r: 70, fill: "#221f0d", stroke: ORO, "stroke-width": 4 }, MOLG);
+  for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; el("line", { x1: Math.cos(a) * 22, y1: Math.sin(a) * 22, x2: Math.cos(a) * 64, y2: Math.sin(a) * 64, stroke: ORO, "stroke-width": 2, "stroke-opacity": .6 }, MOLG); }
+  el("circle", { r: 20, fill: TIN, stroke: ORC, "stroke-width": 3 }, MOLG);
+  el("rect", { x: 4240, y: 705, width: 220, height: 15, fill: TIN, stroke: ORO, "stroke-width": 2 }, E3);
+  dib("M4750,470 L5530,470 Q5560,470 5560,500 L5560,520", .40, .47, E3, { "stroke-width": 12, stroke: "#3a3214" });
+  dib("M4750,470 L5530,470 Q5560,470 5560,500 L5560,520", .40, .47, E3, { "stroke-width": 3 });
+  dib("M5540,520 L5580,520", .45, .47, E3, { "stroke-width": 6 });
+
+  /* 4 · chorro y tinaja */
+  const E4 = g({}, CERCA);
+  const TINAJA = g({ transform: "translate(5560,720)" }, E4);
+  const nivelT = el("rect", { x: -120, y: 0, width: 240, height: 0, fill: "url(#vj-aceite)", "clip-path": "url(#vj-tinaja)" }, TINAJA);
+  el("path", { d: "M-90,0 Q-110,-60 -95,-110 Q-80,-150 -60,-160 L60,-160 Q80,-150 95,-110 Q110,-60 90,0 Z", fill: "none", stroke: ORO, "stroke-width": 4 }, TINAJA);
+  el("path", { d: "M-70,-160 L70,-160", stroke: ORC, "stroke-width": 6, "stroke-linecap": "round" }, TINAJA);
+  const chorro = el("path", { d: "", fill: "url(#vj-chorro)" }, E4);
+  const gotas = [...Array(10)].map(() => el("circle", { r: 4, fill: ORC, opacity: 0 }, E4));
+  const brillo = el("circle", { cx: 5560, cy: 560, r: 0, fill: "url(#vj-halo)" }, E4);
+
+  /* 5 · manguera y cisterna */
+  const E5 = g({}, CERCA);
+  const mang = dib("M5650,640 C5800,640 5900,520 6380,520", .565, .585, E5, { "stroke-width": 8, stroke: "#3a3214" });
+  const mangF = el("path", { d: "M5650,640 C5800,640 5900,520 6380,520", fill: "none", stroke: ORC, "stroke-width": 4, "stroke-dasharray": "2 18", "stroke-linecap": "round", opacity: 0 }, E5);
+  const CIS = g({}, CERCA);
+  const nivelC = el("rect", { x: -130, y: -85, width: 370, height: 0, fill: "url(#vj-aceite)", "clip-path": "url(#vj-tanque)", opacity: .85 }, CIS);
+  el("rect", { x: -130, y: -205, width: 370, height: 120, rx: 60, fill: "rgba(240,207,106,.05)", stroke: ORO, "stroke-width": 4 }, CIS);
+  [-40, 60, 160].forEach((x) => el("path", { d: `M${x},-205 L${x},-85`, stroke: ORO, "stroke-width": 2, "stroke-opacity": .5 }, CIS));
+  el("text", { x: 55, y: -132, "text-anchor": "middle", "font-family": "Great Vibes, cursive", "font-size": 44, fill: ORC }, CIS).textContent = "El Platero de Oro";
+  el("rect", { x: -150, y: -85, width: 540, height: 22, fill: TIN, stroke: ORO, "stroke-width": 3 }, CIS);
+  el("path", Object.assign({ d: "M265,-63 L265,-195 Q265,-210 280,-210 L340,-210 Q360,-210 372,-185 L392,-130 L392,-63 Z" }, ts), CIS);
+  el("path", { d: "M285,-195 L335,-195 Q348,-195 355,-180 L370,-140 L285,-140 Z", fill: "rgba(240,207,106,.12)", stroke: ORO, "stroke-width": 2.5 }, CIS);
+  const rC = [-70, 30, 320].map((x) => rueda(x, -38, 36, CIS));
+
+  /* 6 · nave y embotellado */
+  const E6 = g({}, CERCA);
+  dib("M8400,720 L8400,430 L9150,330 L9900,430 L9900,720", .71, .76, E6, { "stroke-width": 4 });
+  dib("M8440,720 L8440,560 L8600,560 L8600,720", .72, .76, E6, { "stroke-width": 3 });
+  const texN = el("text", { x: 9150, y: 410, "text-anchor": "middle", "font-family": "Great Vibes, cursive", "font-size": 52, fill: ORC, opacity: 0 }, E6); texN.textContent = "El Platero de Oro";
+  [8780, 8960].forEach((x) => {
+    dib(`M${x - 55},700 L${x - 55},500 Q${x - 55},470 ${x},466 Q${x + 55},470 ${x + 55},500 L${x + 55},700`, .73, .77, E6, { "stroke-width": 3.5 });
+    dib(`M${x - 55},560 L${x + 55},560 M${x - 55},640 L${x + 55},640`, .74, .77, E6, { "stroke-width": 1.5, "stroke-opacity": .5 });
+    dib(`M${x - 40},700 L${x - 45},720 M${x + 40},700 L${x + 45},720`, .74, .77, E6, { "stroke-width": 3 });
+  });
+  dib("M8840,520 L8840,450 L9250,450 L9250,540", .74, .78, E6, { "stroke-width": 5, stroke: "#3a3214" });
+  dib("M8840,520 L8840,450 L9250,450 L9250,540", .74, .78, E6, { "stroke-width": 2 });
+  dib("M9050,662 L9800,662 M9050,676 L9800,676", .74, .78, E6, { "stroke-width": 3 });
+  for (let x = 9070; x < 9800; x += 46) dib(`M${x},676 L${x},720`, .75, .78, E6, { "stroke-width": 2, "stroke-opacity": .5 });
+  dib("M9205,540 L9295,540 L9295,580 L9205,580 Z", .75, .78, E6, { "stroke-width": 3 });
+  dib("M9250,580 L9250,598", .75, .78, E6, { "stroke-width": 4 });
+  dib("M9390,520 L9490,520 L9490,560 L9390,560 Z", .75, .78, E6, { "stroke-width": 3 });
+  const chorrito = el("rect", { x: 9247, y: 598, width: 6, height: 28, fill: ORC, opacity: 0 }, E6);
+  const bots = [];
+  const BOTS = g({}, E6);
+  for (let i = 0; i < 10; i++) {
+    const b = g({}, BOTS);
+    const lv = el("rect", { x: -40, y: 0, width: 80, height: 0, fill: "url(#vj-aceite)", "clip-path": "url(#vj-bot)" }, b);
+    el("use", { href: "#vj-botella", fill: "rgba(240,207,106,.06)", stroke: ORO, "stroke-width": 2.5 }, b);
+    const tap = el("rect", { x: -13, y: -136, width: 26, height: 16, rx: 3, fill: TIN, stroke: ORC, "stroke-width": 2, opacity: 0 }, b);
+    const et = el("rect", { x: -26, y: -62, width: 52, height: 34, rx: 4, fill: TIN, stroke: ORC, "stroke-width": 1.5, opacity: 0 }, b);
+    bots.push({ b, lv, tap, et });
+  }
+  /* 7 · caja, furgoneta, casa y mesa */
+  const CAJA = g({}, CERCA);
+  el("rect", { x: -36, y: -60, width: 72, height: 60, fill: "#2a2510", stroke: ORO, "stroke-width": 3 }, CAJA);
+  el("path", { d: "M-36,-44 L36,-44 M0,-60 L0,-44", stroke: ORC, "stroke-width": 2 }, CAJA);
+  const FUR = g({}, CERCA);
+  el("path", Object.assign({ d: "M-110,-50 L-110,-235 Q-110,-245 -100,-245 L190,-245 Q215,-245 228,-215 L262,-130 Q268,-118 268,-100 L268,-50 Z" }, ts), FUR);
+  el("path", { d: "M195,-230 L215,-230 Q222,-230 226,-220 L252,-150 L195,-150 Z", fill: "rgba(240,207,106,.12)", stroke: ORO, "stroke-width": 2.5 }, FUR);
+  el("circle", { cx: 212, cy: -182, r: 12, fill: TIN, stroke: ORC, "stroke-width": 2 }, FUR);
+  el("path", { d: "M196,-150 Q212,-176 228,-150", fill: TIN, stroke: ORC, "stroke-width": 2 }, FUR);
+  el("text", { x: 40, y: -150, "text-anchor": "middle", "font-family": "Great Vibes, cursive", "font-size": 42, fill: ORC }, FUR).textContent = "El Platero de Oro";
+  el("text", { x: 40, y: -112, "text-anchor": "middle", "font-family": "Poppins, sans-serif", "font-size": 15, "letter-spacing": 5, fill: CRE, opacity: .8 }, FUR).textContent = "REPARTO A DOMICILIO";
+  const rF = [-30, 190].map((x) => rueda(x, -38, 38, FUR));
+  const E7 = g({}, CERCA);
+  dib("M10900,720 L10900,420 L11120,330 L11340,420 L11340,720", .9, .95, E7, { "stroke-width": 3.5 });
+  dib("M11040,720 L11040,600 L11110,600 L11110,720 M11180,480 L11280,480 L11280,560 L11180,560 Z", .91, .95, E7, { "stroke-width": 2.5 });
+  const luzL = el("circle", { cx: 11230, cy: 520, r: 120, fill: "url(#vj-halo)", opacity: 0 }, E7);
+  const BSAL = g({ opacity: 0 }, CERCA);
+  el("circle", { r: 150, fill: "url(#vj-halo)" }, BSAL);
+  el("image", { href: "img/edicion-premium.webp", x: -40, y: -100, width: 80, height: 200 }, BSAL);
+  /* la aceituna protagonista */
+  const OLI = g({}, CERCA);
+  el("circle", { r: 46, fill: "url(#vj-halo)" }, OLI);
+  el("ellipse", { rx: 12, ry: 15, fill: "#2e2a10", stroke: ORC, "stroke-width": 3 }, OLI);
+  el("ellipse", { cx: -4, cy: -5, rx: 3, ry: 4, fill: CRE, opacity: .7 }, OLI);
+  el("path", { d: "M0,-15 Q14,-34 30,-30 Q16,-16 0,-15 Z", fill: "#3a3313", stroke: ORO, "stroke-width": 1.5 }, OLI);
+
+  const CAM = [[0, 720], [.10, 760], [.13, 1200], [.30, 3880], [.35, 4180], [.42, 4220], [.47, 5560], [.56, 5580], [.58, 5900], [.61, 6560], [.72, 8560], [.75, 9180], [.84, 9300], [.875, 10150], [.95, 10640], [1, 10600]];
+  const CAMY = [[0, 450], [.47, 450], [.5, 560], [.55, 560], [.58, 450], [.95, 450], [1, 400]];
+  const ZOOM = [[0, 1.05], [.10, 1.05], [.13, 1], [.44, 1], [.47, 1.15], [.5, 2.4], [.55, 2.4], [.58, 1], [.95, 1], [1, 1.12]];
+  const TRX = [[0, 1460], [.13, 1460], [.30, 3900]];
+  const CIX = [[0, 6260], [.61, 6260], [.72, 8240]];
+  const FUX = [[0, 10060], [.875, 10060], [.95, 10470]];
+
+  const api = { botella: BSAL, arbol: arbol.E, luna };
+  api.pintar = function pintar(p) {
+    const W = svg.clientWidth || 800, Hh = svg.clientHeight || 500, asp = W / Hh;
+    const z = kf(p, ZOOM); let vw, vh;
+    const movil = asp < 1.25;
+    if (!movil) { vh = 900; vw = 900 * asp; if (vw > 1700) { vw = 1700; vh = vw / asp; } } else { vw = Math.max(620, 900 * asp); vh = vw / asp; }
+    vw /= z; vh /= z;
+    const cx = kf(p, CAM), cy0 = kf(p, CAMY);
+    const cy = movil ? Math.min(cy0, SUELO - vh * .3) : Math.min(cy0, SUELO - vh * .3 + 20);
+    svg.setAttribute("viewBox", `${(cx - vw / 2).toFixed(1)} ${(cy - vh / 2).toFixed(1)} ${vw.toFixed(1)} ${vh.toFixed(1)}`);
+    LEJOS.setAttribute("transform", `translate(${(cx * .55).toFixed(1)},0)`);
+    setT(luna, cx * .45 + vw * .3, cy - vh * .3, 0);
+
+    pintarTrazos(p);
+    arbol.pintar(1);
+
+    // varear: la vara golpea las ramas y caen aceitunas al manto
+    const varea = p < .11;
+    VARA.setAttribute("transform", `rotate(${(38 + (varea ? Math.abs(Math.sin(p * 260)) * 14 : 0)).toFixed(1)} -10 -120)`);
+    caen.forEach((c, i) => { const f = (p * 70 + c.f) % 1; setT(c.e, c.x, lerp(c.y0, 712, f * f), 0); c.e.setAttribute("opacity", varea ? (f < .95 ? .9 : 0) : 0); });
+
+    const sube = suave(seg(p, .035, .065)), lanza = suave(seg(p, .072, .09));
+    let ang = lerp(12, 145, sube); ang = lerp(ang, 30, lanza);
+    BRAZO.setAttribute("transform", `rotate(${ang.toFixed(1)} -19 -130)`);
+    const rad = ang * Math.PI / 180;
+    const mano = { x: PIV.x - Math.sin(rad) * LBR, y: PIV.y + Math.cos(rad) * LBR };
+
+    const tx = kf(p, TRX);
+    setT(TRAC, tx, SUELO, 0);
+    rT1.giro.setAttribute("transform", `rotate(${(tx / 72 * 57.3).toFixed(1)})`); rT2.giro.setAttribute("transform", `rotate(${(tx / 42 * 57.3).toFixed(1)})`); rR.giro.setAttribute("transform", `rotate(${(tx / 38 * 57.3).toFixed(1)})`);
+    const vuelca = suave(seg(p, .30, .33)) * (1 - suave(seg(p, .37, .40)));
+    REM.setAttribute("transform", `rotate(${(-26 * vuelca).toFixed(2)} -335 -75)`);
+    MONTON.setAttribute("opacity", (seg(p, .09, .11) * (1 - seg(p, .31, .345))).toFixed(2));
+    const enMarcha = p > .13 && p < .30;
+    humos.forEach((h, i) => { const f = ((p * 90) + i / 3) % 1; h.setAttribute("cy", (-190 - f * 70).toFixed(1)); h.setAttribute("cx", (184 - f * 40).toFixed(1)); h.setAttribute("r", (8 + f * 14).toFixed(1)); h.setAttribute("opacity", enMarcha ? ((1 - f) * .35).toFixed(2) : 0); });
+
+    let ox = 875, oy = 530, os = 1, oo = 1;
+    if (p < .065) { oy = 530 + Math.sin(p * 400) * 2; }
+    else if (p < .072) { ox = mano.x; oy = mano.y; }
+    else if (p < .09) { const t = suave(seg(p, .072, .09)); ox = lerp(mano.x, tx - 230, t); oy = lerp(mano.y, SUELO - 170, t) - Math.sin(t * Math.PI) * 170; }
+    else if (p < .31) { ox = tx - 230; oy = SUELO - 172; os = lerp(1, .8, seg(p, .09, .11)); }
+    else if (p < .345) { const t = suave(seg(p, .31, .345)); ox = lerp(tx - 300, 3560, t); oy = lerp(SUELO - 150, 640, t); os = .8; }
+    else if (p < .40) { const t = seg(p, .345, .40); ox = lerp(3560, 4060, t); oy = lerp(640, 515, t); os = .8; oo = 1 - seg(p, .385, .40); }
+    else oo = 0;
+    setT(OLI, ox, oy, Math.sin(p * 60) * 8, os); OLI.setAttribute("opacity", oo.toFixed(2)); OLI.style.display = oo < .01 ? "none" : "";
+
+    texA.setAttribute("opacity", seg(p, .34, .38).toFixed(2));
+    cinta.setAttribute("opacity", (seg(p, .33, .35) * (1 - seg(p, .44, .46))).toFixed(2)); cinta.style.strokeDashoffset = (-p * 4000).toFixed(1);
+    MOLG.setAttribute("transform", `rotate(${(p * 2600).toFixed(1)})`);
+    humoA.forEach((h, i) => { const f = ((p * 60) + i / 4) % 1; h.setAttribute("cy", (250 - f * 110).toFixed(1)); h.setAttribute("cx", (4660 + f * 30).toFixed(1)); h.setAttribute("r", (10 + f * 22).toFixed(1)); h.setAttribute("opacity", (p > .33 ? (1 - f) * .28 : 0).toFixed(2)); });
+
+    const sale = seg(p, .465, .50), corta = seg(p, .585, .60);
+    const largo = 200 * suave(sale), top = 522, t0 = top + largo * corta;
+    if (largo > 1 && corta < 1) {
+      const L = [], R = [];
+      for (let i = 0; i <= 14; i++) { const y = lerp(t0, top + largo, i / 14); const w = lerp(9, 6, i / 14) + Math.sin(p * 900 + i * .9) * 1.4; L.push(`${(5560 - w).toFixed(1)},${y.toFixed(1)}`); R.unshift(`${(5560 + w * .9).toFixed(1)},${y.toFixed(1)}`); }
+      chorro.setAttribute("d", "M" + L.join(" L") + " L" + R.join(" L") + " Z");
+    } else chorro.setAttribute("d", "");
+    const nivel = suave(seg(p, .49, .58)) * 130; nivelT.setAttribute("y", (-nivel).toFixed(1)); nivelT.setAttribute("height", nivel.toFixed(1));
+    gotas.forEach((gt, i) => { const f = ((p * 120) + i / 10) % 1; const a = (i / 10) * Math.PI; const on = sale > .95 && corta < .5; gt.setAttribute("cx", (5560 + Math.cos(a) * f * 40 * (i % 2 ? 1 : -1)).toFixed(1)); gt.setAttribute("cy", (722 - nivel - Math.sin(f * Math.PI) * 30).toFixed(1)); gt.setAttribute("opacity", on ? ((1 - f) * .9).toFixed(2) : 0); });
+    brillo.setAttribute("r", (sale * (1 - corta) * 140).toFixed(1));
+
+    const llenaC = suave(seg(p, .585, .61));
+    mangF.setAttribute("opacity", (seg(p, .585, .59) * (1 - seg(p, .61, .615))).toFixed(2)); mangF.style.strokeDashoffset = (-p * 3000).toFixed(1);
+    mang.style.opacity = (1 - seg(p, .61, .62)).toFixed(2);
+    const cxC = kf(p, CIX); setT(CIS, cxC, SUELO, 0);
+    rC.forEach((r) => r.giro.setAttribute("transform", `rotate(${(cxC / 36 * 57.3).toFixed(1)})`));
+    const hC = llenaC * 120; nivelC.setAttribute("y", (-85 - hC).toFixed(1)); nivelC.setAttribute("height", hC.toFixed(1));
+
+    texN.setAttribute("opacity", seg(p, .74, .77).toFixed(2));
+    const cinta2 = seg(p, .755, .86) * 900;
+    bots.forEach((o, i) => {
+      const x = 9020 + ((i * 78 + cinta2) % 780); setT(o.b, x, 662, 0);
+      const f = cl((x - 9230) / 40); o.lv.setAttribute("y", (-122 * f).toFixed(1)); o.lv.setAttribute("height", (122 * f).toFixed(1));
+      o.tap.setAttribute("opacity", x > 9320 ? 1 : 0); o.et.setAttribute("opacity", x > 9440 ? 1 : 0);
+      o.b.setAttribute("opacity", (cl((x - 9030) / 40) * cl((9795 - x) / 40) * seg(p, .74, .77)).toFixed(2));
+    });
+    chorrito.setAttribute("opacity", (p > .755 && p < .86) ? .9 : 0);
+
+    const fx = kf(p, FUX); setT(FUR, fx, SUELO, 0); rF.forEach((r) => r.giro.setAttribute("transform", `rotate(${(fx / 38 * 57.3).toFixed(1)})`));
+    const cajaT = suave(seg(p, .84, .87));
+    if (p < .84 || p > .875) CAJA.setAttribute("opacity", 0);
+    else { CAJA.setAttribute("opacity", (1 - seg(p, .868, .875)).toFixed(2)); setT(CAJA, lerp(9860, 9940, cajaT), SUELO - Math.sin(cajaT * Math.PI) * 60 - 40 * cajaT, 0); }
+    // la botella negra sale por el techo de la furgoneta y empieza a girar
+    const sal = suave(seg(p, .95, 1));
+    BSAL.setAttribute("opacity", seg(p, .95, .965).toFixed(2));
+    setT(BSAL, fx + 60, lerp(SUELO - 230, SUELO - 420, sal), sal * 70, lerp(.35, 1, sal));
+    luzL.setAttribute("opacity", (seg(p, .93, .97) * .8).toFixed(2));
+  };
+  return api;
+}
+
+/* ═══ el olivo de la portada baja y se planta en el olivar ═══ */
+const viajaCaja = document.createElement("div");
+viajaCaja.className = "arbol-viaja"; viajaCaja.setAttribute("aria-hidden", "true");
+viajaCaja.innerHTML = '<svg viewBox="330 180 620 545"></svg>';
+document.body.appendChild(viajaCaja);
+const viajaSvg = viajaCaja.querySelector("svg");
+{ const L = lienzo(viajaSvg); const a = olivo(viajaSvg, L.el, L.dib, L.rnd, 0, 1); L.pintarTrazos(1); a.pintar(1);
+  const o = L.el("g", { transform: "translate(875,532)" }); L.el("circle", { r: 46, fill: "url(#vj-halo)" }, o); L.el("ellipse", { rx: 12, ry: 15, fill: "#2e2a10", stroke: ORC, "stroke-width": 3 }, o); L.el("ellipse", { cx: -4, cy: -5, rx: 3, ry: 4, fill: CRE, opacity: .7 }, o); }
+const solPortada = document.querySelector(".alba-sol");
+
+/* ═══ el viaje seguido: progreso del tramo fijado ═══ */
+const tramo = document.querySelector(".vjt");
+const svgV = tramo.querySelector("svg.vj-mundo");
+const M = Mundo(svgV);
+const pasos = [...tramo.querySelectorAll(".vjt-paso")], puntos = [...tramo.querySelectorAll(".vjt-rail i")], lleno = tramo.querySelector(".vjt-lleno");
+const CORTES = [0, .13, .30, .45, .575, .73, .87];
+const esc = document.querySelector("#escaparate");
+const bot0 = () => esc.querySelector(".esc-botella");
+const cae = document.querySelector(".botella-cae");
+const saltar = document.querySelector(".saltar-intro");
+let vista = false; try { vista = localStorage.getItem("intro-vista") === "1"; } catch (e) {}
+if (vista) { saltar.classList.add("vista"); saltar.querySelector("span").textContent = "Ya la has visto · Saltar intro"; }
+saltar.addEventListener("click", () => { document.documentElement.style.scrollBehavior = "auto"; scrollTo(0, esc.offsetTop); document.documentElement.style.scrollBehavior = ""; });
+let ultimo = -1, ultPaso = -1;
+function bucle() {
+  pend = false;
+  const vh = innerHeight;
+  const r = tramo.getBoundingClientRect();
+  const p = quieto ? 1 : cl(-r.top / Math.max(1, tramo.offsetHeight - vh));
+  if (r.bottom > -50 && r.top < vh + 50 && Math.abs(p - ultimo) > 1e-5) {
+    ultimo = p; M.pintar(p);
+    let k = 0; for (let i = 0; i < CORTES.length; i++) if (p >= CORTES[i] - .004) k = i;
+    if (k !== ultPaso) { pasos.forEach((s, i) => s.classList.toggle("on", i === k)); ultPaso = k; }
+    puntos.forEach((d, i) => d.classList.toggle("on", i <= k));
+    lleno.style.width = (cl(p / .95) * 100).toFixed(1) + "%";
+  }
+  // el olivo de la portada se desliza hacia abajo y se planta donde empieza el viaje
+  const tA = quieto ? 1 : cl(1 - r.top / vh);
+  if (tA > 0 && tA < 1 && solPortada) {
+    const ri = solPortada.getBoundingClientRect();
+    const ctm = svgV.getScreenCTM();
+    let fin = null;
+    if (ctm) { const k = Math.hypot(ctm.a, ctm.b); const pt = svgV.createSVGPoint(); pt.x = 330; pt.y = 180; const q = pt.matrixTransform(ctm); fin = { left: q.x, top: q.y, width: 620 * k, height: 545 * k }; }
+    if (fin) {
+      const e = suave(tA);
+      const L2 = lerp(ri.left, fin.left, e), T2 = lerp(ri.top, fin.top, e) - Math.sin(e * Math.PI) * 30;
+      const W2 = lerp(ri.width, fin.width, e), H2 = lerp(ri.height, fin.height, e);
+      const aplasta = e > .85 ? 1 - Math.sin((e - .85) / .15 * Math.PI) * .05 : 1; // al plantarse, un pequeño asiento
+      viajaCaja.style.cssText = `visibility:visible;left:${L2.toFixed(1)}px;top:${T2.toFixed(1)}px;width:${W2.toFixed(1)}px;height:${H2.toFixed(1)}px;transform:scaleY(${aplasta.toFixed(3)})`;
+      solPortada.style.opacity = "0"; M.arbol.style.visibility = "hidden";
+    }
+  } else {
+    viajaCaja.style.visibility = "hidden";
+    if (solPortada) solPortada.style.opacity = tA >= 1 ? "0" : "";
+    M.arbol.style.visibility = tA >= 1 ? "" : "hidden";
+  }
+  // la botella sale de la furgoneta y cae girando hasta el escaparate
+  const re = esc.getBoundingClientRect();
+  const t = cl(1 - re.top / vh);
+  const b0 = bot0();
+  if (!quieto && b0 && t > 0 && t < 1) {
+    const img = M.botella.querySelector("image");
+    const ri = img.getBoundingClientRect();
+    const ctm = svgV.getScreenCTM(); const esca = ctm ? Math.hypot(ctm.a, ctm.b) : 1;
+    // el punto de partida es la botella del dibujo, tal como quedó al final del viaje
+    const hIni = 200 * esca, cxI = ri.left + ri.width / 2, cyI = ri.top + ri.height / 2;
+    b0.style.visibility = "hidden";
+    const rb = b0.getBoundingClientRect();
+    const hFin = b0.offsetHeight, cxF = rb.left + rb.width / 2, cyF = rb.top + rb.height / 2;
+    const e = suave(t);
+    const h = lerp(hIni, hFin, e);
+    const cx = lerp(cxI, cxF, e) + Math.sin(e * Math.PI) * Math.min(120, innerWidth * .12);
+    const cy = lerp(cyI, cyF, e);
+    const w = h * (cae.naturalWidth / cae.naturalHeight || .4);
+    cae.style.height = h.toFixed(1) + "px";
+    cae.style.transform = `translate3d(${(cx - w / 2).toFixed(1)}px,${(cy - h / 2).toFixed(1)}px,0) rotate(${lerp(70, 0, e).toFixed(1)}deg)`;
+    cae.style.visibility = "visible";
+    M.botella.style.visibility = "hidden";
+  } else {
+    cae.style.visibility = "hidden";
+    M.botella.style.visibility = "";
+    if (b0) b0.style.visibility = "";
+  }
+  // botón de saltar: arriba a la derecha, debajo de la luna y del texto del paso
+  {
+    const cab = document.querySelector(".cab").getBoundingClientRect().bottom;
+    const bw = saltar.offsetWidth, W = document.documentElement.clientWidth, movil = W < 861;
+    let top = cab + 12, left = W - bw - (movil ? 14 : 28);
+    if (r.top < vh * .5 && r.bottom > vh * .5) {
+      const rl = M.luna.querySelector("circle:last-child").getBoundingClientRect();
+      const panelOn = tramo.querySelector(".vjt-paso.on");
+      const rp = panelOn ? panelOn.getBoundingClientRect() : null;
+      if (movil) top = Math.max(rl.bottom, rp ? rp.bottom : 0) + 14;
+      else { top = rl.bottom + 18; left = Math.min(W - bw - 20, Math.max(W * .5, rl.left + rl.width / 2 - bw / 2)); }
+    }
+    saltar.style.transform = `translate3d(${left.toFixed(0)}px,${top.toFixed(0)}px,0)`;
+  }
+  // el botón de saltar solo durante la intro
+  const enIntro = esc.getBoundingClientRect().top > vh * .5;
+  saltar.classList.toggle("fuera", !enIntro);
+  if (!enIntro && !vista) { vista = true; try { localStorage.setItem("intro-vista", "1"); } catch (e) {} }
+}
+let pend = false;
+addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(bucle); } }, { passive: true });
+addEventListener("resize", () => { ultimo = -1; requestAnimationFrame(bucle); });
+M.pintar(0); bucle();
+document.fonts && document.fonts.ready.then(() => { ultimo = -1; bucle(); });
+})();
+
+
+/* ═══ fotos listas antes de llegar, brillo dorado al pasar y segunda foto ═══ */
+(() => {
+  // precarga de todas las fotos de la tienda en cuanto la página está lista
+  const urls = new Set([...document.querySelectorAll("img")].map((i) => i.currentSrc || i.src));
+  const precargar = () => urls.forEach((u) => { const im = new Image(); im.decoding = "async"; im.src = u; im.decode && im.decode().catch(() => {}); });
+  (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(precargar);
+  // brillo: más intenso cuanto más cerca del centro de la pantalla
+  const els = [...document.querySelectorAll(".foco, .mesa-fotos figure, .tierra-foto")];
+  let pend = false;
+  const pinta = () => {
+    pend = false; const vh = innerHeight, c = vh / 2;
+    for (const e of els) {
+      const r = e.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) { if (e._b) { e.style.setProperty("--brillo", 0); e._b = 0; } continue; }
+      const d = Math.abs(r.top + r.height / 2 - c) / (c + r.height / 2);
+      const b = Math.max(0, 1 - d * 1.6); const v = +(b * b * (3 - 2 * b)).toFixed(3);
+      if (v !== e._b) { e.style.setProperty("--brillo", v); e._b = v; }
+    }
+  };
+  addEventListener("scroll", () => { if (!pend) { pend = true; requestAnimationFrame(pinta); } }, { passive: true });
+  addEventListener("resize", pinta); pinta();
+  // en móvil: tocar la foto enseña la otra
+  document.addEventListener("click", (ev) => {
+    const caja = ev.target.closest(".foco.dos .prod-img, .foco.dos .t-panel");
+    if (!caja || ev.target.closest("button")) return;
+    if (matchMedia("(hover:hover)").matches) return;
+    caja.closest(".foco").classList.toggle("ver2");
+  });
+})();
+</script>
+</body>
+</html>
